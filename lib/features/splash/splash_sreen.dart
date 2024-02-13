@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:you_matter/core/route/route.dart';
 import 'package:you_matter/core/theme/colors.dart';
 import 'package:you_matter/core/utils/sizes.dart';
-import 'package:you_matter/features/home/presentation/ui/home_screen.dart';
+import 'package:you_matter/features/profile/presentation/ui/profile_screen.dart';
 import 'package:you_matter/features/login/presentation/ui/login.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -23,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
       final preference = await SharedPreferences.getInstance();
       String? uid = preference.getString("uid");
       if (uid != null) {
-        pushTo(context: context, screen: const Home());
+        pushTo(context: context, screen: const ProfileScreen());
       } else {
         pushTo(context: context, screen: const LoginScreen());
       }
