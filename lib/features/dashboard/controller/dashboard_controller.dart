@@ -7,7 +7,9 @@ import 'package:you_matter/services/state/state_bloc.dart';
 class DashboardController {
   List<Widget> screens = [
     const HomeScreen(),
-    const ChatScreen(),
+    const ChatScreen(
+      chatId: '',
+    ),
     const ProfileScreen(),
   ];
   StateHandlerBloc baseBloc = StateHandlerBloc();
