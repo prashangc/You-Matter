@@ -1,9 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:you_matter/core/route/route.dart';
 import 'package:you_matter/core/theme/colors.dart';
 import 'package:you_matter/core/utils/sizes.dart';
+import 'package:you_matter/features/home/presentation/ui/home_screen.dart';
 import 'package:you_matter/features/login/presentation/ui/login.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -17,8 +19,14 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 2), () {
-      pushTo(context: context, screen: const LoginScreen());
+    Future.delayed(const Duration(seconds: 2), () async {
+      final preference = await SharedPreferences.getInstance();
+      String? uid = preference.getString("uid");
+      if (uid != null) {
+        pushTo(context: context, screen: const Home());
+      } else {
+        pushTo(context: context, screen: const LoginScreen());
+      }
     });
   }
 

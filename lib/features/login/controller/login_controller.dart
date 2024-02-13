@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:you_matter/core/utils/my_check_internet_connection.dart';
 import 'package:you_matter/core/utils/my_pop_up.dart';
 import 'package:you_matter/features/login/model/login_model.dart';
@@ -13,16 +15,20 @@ class LoginController {
       popUpHelper.loadingAlert(context: context, myTap: () {});
       bloc.add(LoadingEvent(context: context, msg: 'Logging in ...'));
       try {
-        // write code here bot
-        // print(model.email);
-        // print(model.password);
-
+        final firebaseAuth = FirebaseAuth.instance;
+        UserCredential userCredential =
+            await firebaseAuth.signInWithEmailAndPassword(
+                email: model.email!, password: model.password!);
+        final preference = await SharedPreferences.getInstance();
+        if (userCredential.user?.uid != null) {
+          await preference.setString("uid", userCredential.user!.uid);
+        }
         bloc.add(SuccessEvent(context: context, msg: 'Login successfully !!!'));
       } catch (e) {
         bloc.add(
           ErrorEvent(
             context: context,
-            msg: e.toString(),
+            msg: e is FirebaseAuthException ? e.message : e.toString(),
             listOfErrors: [],
           ),
         );

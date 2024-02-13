@@ -5,6 +5,7 @@ import 'package:you_matter/core/theme/textstyle.dart';
 import 'package:you_matter/core/utils/button.dart';
 import 'package:you_matter/core/utils/sizes.dart';
 import 'package:you_matter/core/utils/text_form_field.dart';
+import 'package:you_matter/features/login/controller/login_controller.dart';
 import 'package:you_matter/features/login/model/login_model.dart';
 import 'package:you_matter/features/register/presentation/ui/register.dart';
 import 'package:you_matter/services/state/state_bloc.dart';
@@ -48,7 +49,9 @@ Widget loginForm(context, LoginModel model, formKeys) {
           height: 50.0,
           text: 'Login',
           bloc: StateHandlerBloc(),
-          myTap: () {},
+          myTap: () {
+            loginController.onBtnCick(context, model);
+          },
           validateKeys: formKeys,
         ),
         sizedBox12(),

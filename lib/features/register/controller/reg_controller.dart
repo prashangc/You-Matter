@@ -31,7 +31,7 @@ class RegisterController {
         bloc.add(
           ErrorEvent(
             context: context,
-            msg: e.toString(),
+            msg: e is FirebaseAuthException ? e.message : e.toString(),
             listOfErrors: [],
           ),
         );
