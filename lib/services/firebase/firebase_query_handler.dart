@@ -74,18 +74,16 @@ class FirebaseQueryHelper {
   }
 
   static void addDataToDocument({
-    required String data,
+    required Map<String, dynamic> data,
     required String collectionID,
     required String docID,
   }) async {
     try {
-      var categoriesArray =
-          firebaseFireStore.collection(collectionID).doc(docID);
-      categoriesArray.update({
-        'expense_type': FieldValue.arrayUnion([data])
-      });
-      showSnackBar(
-          message: "successfully Created!!", type: SnackBarTypes.success);
+      final doc = firebaseFireStore.collection(collectionID).doc(docID);
+      // doc.update({
+      //   'expense_type': FieldValue.arrayUnion([data])
+      // });
+      await doc.collection(collectionID).doc(docID).set(data);
     } on FirebaseException catch (e) {
       showSnackBar(
           message: e.message ?? "Something Went Wrong!!",

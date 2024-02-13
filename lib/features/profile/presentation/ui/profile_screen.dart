@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:you_matter/core/route/route.dart';
 import 'package:you_matter/core/theme/textstyle.dart';
@@ -52,7 +54,45 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Align(
                         alignment: Alignment.bottomRight,
                         child: InkWell(
-                          onTap: () {},
+                          onTap: () async {
+                            final imagePicker = ImagePicker();
+                            XFile? image;
+
+                            final permissionStatus =
+                                await Permission.mediaLibrary.isGranted ||
+                                    await Permission.mediaLibrary.isLimited;
+                            if (permissionStatus) {
+                              image = await imagePicker.pickImage(
+                                  source: ImageSource.gallery, imageQuality: 5);
+                              if (image != null) {
+                                print(image.path);
+                                // image.
+                                // user?.updatePhotoURL(photoURL)
+                                // await imageCompressUseCase.compressImage(image.path, (file) {
+                                //   compressedImage(file);
+                                // });
+                                // compressedImage(File(image.path));
+                              }
+                            } else {
+                              bool hasPermission = await Permission.mediaLibrary
+                                      .request()
+                                      .isGranted ||
+                                  await Permission.mediaLibrary
+                                      .request()
+                                      .isLimited;
+                              if (hasPermission) {
+                                image = await imagePicker.pickImage(
+                                    source: ImageSource.gallery);
+                                if (image != null) {
+                                  print(image.path);
+                                  // await imageCompressUseCase.compressImage(image.path, (file) {
+                                  //   compressedImage(file);
+                                  // });
+                                  // compressedImage(File(image.path));
+                                }
+                              }
+                            }
+                          },
                           child: const Icon(
                             Icons.photo,
                           ),
