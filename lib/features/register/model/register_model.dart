@@ -1,11 +1,11 @@
-class RegisterState {
+class RegisterModel {
   String? name;
   String? email;
   String? password;
   String? phone;
   String? passwordConfirmation;
 
-  RegisterState({
+  RegisterModel({
     this.name,
     this.email,
     this.phone,
@@ -13,7 +13,7 @@ class RegisterState {
     this.passwordConfirmation,
   });
 
-  RegisterState.fromJson(Map<String, dynamic> json) {
+  RegisterModel.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     email = json['email'];
     password = json['password'];

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:you_matter/core/route/route.dart';
 import 'package:you_matter/core/theme/colors.dart';
 import 'package:you_matter/core/theme/textstyle.dart';
 import 'package:you_matter/core/utils/button.dart';
 import 'package:you_matter/core/utils/sizes.dart';
 import 'package:you_matter/core/utils/text_form_field.dart';
+import 'package:you_matter/features/register/presentation/ui/register.dart';
 import 'package:you_matter/services/state/state_bloc.dart';
 
 Widget loginForm(context, formKeys) {
@@ -47,7 +49,7 @@ Widget loginForm(context, formKeys) {
         sizedBox12(),
         GestureDetector(
           onTap: () {
-            // go(context: context, screen: const RegisterScreen());
+            pushTo(context: context, screen: const RegisterScreen());
           },
           child: SizedBox(
             width: maxWidth(context),

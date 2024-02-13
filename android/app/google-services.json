@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "922916800011",
+    "project_id": "you-matter-8446c",
+    "storage_bucket": "you-matter-8446c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:922916800011:android:2b0425771170d9013d690e",
+        "android_client_info": {
+          "package_name": "com.example.you_matter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCDQxGUvwScW8W13Ea98q4jTouj7YbKUAA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
