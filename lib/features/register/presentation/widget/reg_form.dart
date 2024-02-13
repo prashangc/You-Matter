@@ -104,7 +104,9 @@ Widget formCard(context, RegisterModel model, formKeys) {
           width: maxWidth(context),
           height: 50.0,
           text: 'Register',
-          myTap: () {},
+          myTap: () {
+            registerController.onBtnCick(context, model);
+          },
           validateKeys: formKeys,
         ),
         sizedBox12(),

@@ -1,0 +1,42 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:you_matter/core/utils/my_check_internet_connection.dart';
+import 'package:you_matter/core/utils/my_pop_up.dart';
+import 'package:you_matter/features/login/model/login_model.dart';
+import 'package:you_matter/services/global_bloc/post_bloc/main_bloc.dart';
+import 'package:you_matter/services/global_bloc/post_bloc/main_bloc_event.dart';
+
+class LoginController {
+  onBtnCick(context, LoginModel model) async {
+    bool internetStatus = await checkInternetConnection(context);
+    MainPostBloc bloc = BlocProvider.of<MainPostBloc>(context);
+    if (internetStatus == true) {
+      popUpHelper.loadingAlert(context: context, myTap: () {});
+      bloc.add(LoadingEvent(context: context, msg: 'Logging in ...'));
+      try {
+        // write code here bot
+        // print(model.email);
+        // print(model.password);
+
+        bloc.add(SuccessEvent(context: context, msg: 'Login successfully !!!'));
+      } catch (e) {
+        bloc.add(
+          ErrorEvent(
+            context: context,
+            msg: e.toString(),
+            listOfErrors: [],
+          ),
+        );
+      } finally {}
+    } else {
+      bloc.add(
+        ErrorEvent(
+          context: context,
+          msg: 'No internet',
+          listOfErrors: [],
+        ),
+      );
+    }
+  }
+}
+
+LoginController loginController = LoginController();

@@ -5,10 +5,11 @@ import 'package:you_matter/core/theme/textstyle.dart';
 import 'package:you_matter/core/utils/button.dart';
 import 'package:you_matter/core/utils/sizes.dart';
 import 'package:you_matter/core/utils/text_form_field.dart';
+import 'package:you_matter/features/login/model/login_model.dart';
 import 'package:you_matter/features/register/presentation/ui/register.dart';
 import 'package:you_matter/services/state/state_bloc.dart';
 
-Widget loginForm(context, formKeys) {
+Widget loginForm(context, LoginModel model, formKeys) {
   return Container(
     padding: const EdgeInsets.all(24.0),
     decoration: BoxDecoration(
@@ -26,14 +27,18 @@ Widget loginForm(context, formKeys) {
           errorMessage: 'errorMessage',
           title: 'Login',
           isEmail: true,
-          onValueChanged: (v) {},
+          onValueChanged: (v) {
+            model.email = v;
+          },
         ),
         myTextFormField(
           context: context,
           labelText: 'enter password',
           errorMessage: 'errorMessage',
           title: 'Password',
-          onValueChanged: (v) {},
+          onValueChanged: (v) {
+            model.password = v;
+          },
           visibilityIconBloc: StateHandlerBloc(),
           form: formKeys[1],
         ),

@@ -3,6 +3,7 @@ import 'package:you_matter/core/theme/colors.dart';
 import 'package:you_matter/core/theme/textstyle.dart';
 import 'package:you_matter/core/utils/focus_remover.dart';
 import 'package:you_matter/core/utils/sizes.dart';
+import 'package:you_matter/features/login/model/login_model.dart';
 import 'package:you_matter/features/login/presentation/widgets/login_form.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -15,6 +16,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   List<GlobalKey<FormState>> formKeys =
       List.generate(2, (index) => GlobalKey<FormState>());
+  LoginModel model = LoginModel();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,7 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       style: kStyle18B,
                     ),
                     sizedBox12(),
-                    loginForm(context, formKeys),
+                    loginForm(context, model, formKeys),
                   ],
                 ),
               ),
