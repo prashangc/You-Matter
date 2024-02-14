@@ -1,4 +1,3 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,7 +29,6 @@ class RegisterController {
             .then((value) async {
           await createUserInFireStore(value.user, model.name);
         });
-
         bloc.add(SuccessEvent(
             context: context, msg: 'User account successfully created'));
       } catch (e) {
