@@ -1,6 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:you_matter/core/utils/my_check_internet_connection.dart';
@@ -56,15 +55,15 @@ class RegisterController {
 
   Future<void> createUserInFireStore(User? user, String? username) async {
     if (user != null && username != null) {
-      final userDoc = await FirebaseQueryHelper.getSingleDocument(
-          collectionPath: 'users', docID: user.uid);
-      if (userDoc?.exists != true) {
-        FirebaseQueryHelper.addDataToDocument(data: {
-          'username': username,
-          'email': user.email,
-          'createdOn': DateTime.now(),
-        }, collectionID: 'users', docID: user.uid);
-      }
+      await FirebaseQueryHelper.firebaseFireStore
+          .collection('users')
+          .doc(user.uid)
+          .set({
+        'username': username,
+        'email': user.email,
+        'photoUrl': "",
+        'createdOn': DateTime.now(),
+      });
     }
   }
 }
