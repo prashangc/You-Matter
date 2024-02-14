@@ -25,7 +25,11 @@ class LoginController {
         if (userCredential.user?.uid != null) {
           await preference.setString("uid", userCredential.user!.uid);
         }
-        pushTo(context: context, screen: const BasePage());
+        pushTo(
+            context: context,
+            screen: const BasePage(
+              currentIndex: 0,
+            ));
         bloc.add(SuccessEvent(context: context, msg: 'Login successfully !!!'));
       } catch (e) {
         bloc.add(

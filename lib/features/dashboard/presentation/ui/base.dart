@@ -4,12 +4,13 @@ import 'package:you_matter/core/theme/colors.dart';
 import 'package:you_matter/features/dashboard/controller/dashboard_controller.dart';
 
 class BasePage extends StatelessWidget {
-  const BasePage({super.key});
+  final int currentIndex;
+  const BasePage({super.key, required this.currentIndex});
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<dynamic>(
-        initialData: 0,
+        initialData: currentIndex,
         stream: dashboardController.baseBloc.stateStream,
         builder: (c, s) {
           return Scaffold(
