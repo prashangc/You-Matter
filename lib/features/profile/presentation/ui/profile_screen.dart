@@ -42,143 +42,143 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Stack(
-                  children: [
-                    ClipRRect(
-                        child: StreamBuilder(
-                            stream:
-                                FirebaseQueryHelper.getSingleDocumentAsStream(
-                                    collectionPath: 'users',
-                                    docID: user?.uid ?? ""),
-                            builder: (context, snapshot) {
-                              Map<String, dynamic>? data =
-                                  snapshot.data?.data();
-                              String? url = data?['photoUrl'];
-                              return CachedNetworkImage(
-                                height: maxWidth(context) * 0.25,
-                                width: maxWidth(context) * 0.25,
-                                fit: BoxFit.cover,
-                                imageUrl: url ?? "",
-                                errorWidget: (context, url, error) {
-                                  return Image.asset(
-                                      "assets/images/profile.png");
-                                },
-                                imageBuilder: (context, provider) {
-                                  return Container(
-                                    height: maxWidth(context) * 0.25,
-                                    width: maxWidth(context) * 0.25,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      image: DecorationImage(
-                                        image: provider,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  );
-                                },
-                                placeholder: (context, url) {
-                                  return const CircularProgressIndicator();
-                                },
-                              );
-                            })),
-                    Align(
-                      alignment: Alignment.bottomRight,
-                      child: InkWell(
-                        onTap: () async {
-                          await profileController.onUpdateProfile(user);
-                        },
-                        child: const Icon(
-                          Icons.photo,
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-                const SizedBox(
-                  width: 20,
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    StreamBuilder(
-                      stream: FirebaseQueryHelper.getSingleDocumentAsStream(
-                          collectionPath: 'users', docID: user?.uid ?? ""),
-                      builder: (context, snapshot) {
-                        Map<String, dynamic>? data = snapshot.data?.data();
-                        return Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(data?['username'] ?? "User", style: kStyle18B),
-                            Text(data?['email'] ?? "N/A", style: kStyle12),
-                          ],
-                        );
-                      },
-                    ),
-                    IconButton(
-                        onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                title: const Text("Update"),
-                                content: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    TextField(
-                                      controller: displayNameController,
-                                      decoration: const InputDecoration(
-                                        hintText: "Display Name",
-                                        border: OutlineInputBorder(),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.pop(context);
-                                    },
-                                    child: const Text("Cancel"),
-                                  ),
-                                  TextButton(
-                                    onPressed: () async {
-                                      final displayName =
-                                          displayNameController.text;
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.start,
+            //   children: [
+            //     Stack(
+            //       children: [
+            //         ClipRRect(
+            //             child: StreamBuilder(
+            //                 stream:
+            //                     FirebaseQueryHelper.getSingleDocumentAsStream(
+            //                         collectionPath: 'users',
+            //                         docID: user?.uid ?? ""),
+            //                 builder: (context, snapshot) {
+            //                   Map<String, dynamic>? data =
+            //                       snapshot.data?.data();
+            //                   String? url = data?['photoUrl'];
+            //                   return CachedNetworkImage(
+            //                     height: maxWidth(context) * 0.25,
+            //                     width: maxWidth(context) * 0.25,
+            //                     fit: BoxFit.cover,
+            //                     imageUrl: url ?? "",
+            //                     errorWidget: (context, url, error) {
+            //                       return Image.asset(
+            //                           "assets/images/profile.png");
+            //                     },
+            //                     imageBuilder: (context, provider) {
+            //                       return Container(
+            //                         height: maxWidth(context) * 0.25,
+            //                         width: maxWidth(context) * 0.25,
+            //                         decoration: BoxDecoration(
+            //                           shape: BoxShape.circle,
+            //                           image: DecorationImage(
+            //                             image: provider,
+            //                             fit: BoxFit.cover,
+            //                           ),
+            //                         ),
+            //                       );
+            //                     },
+            //                     placeholder: (context, url) {
+            //                       return const CircularProgressIndicator();
+            //                     },
+            //                   );
+            //                 })),
+            //         Align(
+            //           alignment: Alignment.bottomRight,
+            //           child: InkWell(
+            //             onTap: () async {
+            //               await profileController.onUpdateProfile(user);
+            //             },
+            //             child: const Icon(
+            //               Icons.photo,
+            //             ),
+            //           ),
+            //         )
+            //       ],
+            //     ),
+            //     const SizedBox(
+            //       width: 20,
+            //     ),
+            //     Row(
+            //       crossAxisAlignment: CrossAxisAlignment.end,
+            //       children: [
+            //         StreamBuilder(
+            //           stream: FirebaseQueryHelper.getSingleDocumentAsStream(
+            //               collectionPath: 'users', docID: user?.uid ?? ""),
+            //           builder: (context, snapshot) {
+            //             Map<String, dynamic>? data = snapshot.data?.data();
+            //             return Column(
+            //               crossAxisAlignment: CrossAxisAlignment.start,
+            //               children: [
+            //                 Text(data?['username'] ?? "User", style: kStyle18B),
+            //                 Text(data?['email'] ?? "N/A", style: kStyle12),
+            //               ],
+            //             );
+            //           },
+            //         ),
+            //         IconButton(
+            //             onPressed: () {
+            //               showDialog(
+            //                 context: context,
+            //                 builder: (context) {
+            //                   return AlertDialog(
+            //                     title: const Text("Update"),
+            //                     content: Column(
+            //                       mainAxisSize: MainAxisSize.min,
+            //                       children: [
+            //                         TextField(
+            //                           controller: displayNameController,
+            //                           decoration: const InputDecoration(
+            //                             hintText: "Display Name",
+            //                             border: OutlineInputBorder(),
+            //                           ),
+            //                         ),
+            //                       ],
+            //                     ),
+            //                     actions: [
+            //                       TextButton(
+            //                         onPressed: () {
+            //                           Navigator.pop(context);
+            //                         },
+            //                         child: const Text("Cancel"),
+            //                       ),
+            //                       TextButton(
+            //                         onPressed: () async {
+            //                           final displayName =
+            //                               displayNameController.text;
 
-                                      if (displayName.isNotEmpty) {
-                                        FirebaseQueryHelper.firebaseFireStore
-                                            .collection("users")
-                                            .doc(user?.uid)
-                                            .update({'username': displayName});
-                                      }
-                                      Navigator.pop(context);
-                                      displayNameController.clear();
-                                    },
-                                    child: const Text("Update"),
-                                  )
-                                ],
-                              );
-                            },
-                          );
-                        },
-                        icon: const Icon(Icons.edit))
-                  ],
-                ),
-              ],
-            ),
-            ElevatedButton(
-                onPressed: () async {
-                  await FirebaseAuth.instance.signOut().then((value) async {
-                    final preference = await SharedPreferences.getInstance();
-                    await preference.remove("uid");
-                    pushAndRemoveUpto(
-                        context: context, screen: const LoginScreen());
-                  });
-                },
-                child: const Text("Logout")),
+            //                           if (displayName.isNotEmpty) {
+            //                             FirebaseQueryHelper.firebaseFireStore
+            //                                 .collection("users")
+            //                                 .doc(user?.uid)
+            //                                 .update({'username': displayName});
+            //                           }
+            //                           Navigator.pop(context);
+            //                           displayNameController.clear();
+            //                         },
+            //                         child: const Text("Update"),
+            //                       )
+            //                     ],
+            //                   );
+            //                 },
+            //               );
+            //             },
+            //             icon: const Icon(Icons.edit))
+            //       ],
+            //     ),
+            //   ],
+            // ),
+            // ElevatedButton(
+            //     onPressed: () async {
+            //       await FirebaseAuth.instance.signOut().then((value) async {
+            //         final preference = await SharedPreferences.getInstance();
+            //         await preference.remove("uid");
+            //         pushAndRemoveUpto(
+            //             context: context, screen: const LoginScreen());
+            //       });
+            //     },
+            //     child: const Text("Logout")),
             myAppBar(),
             Expanded(
               child: Stack(
@@ -221,168 +221,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ],
         ),
       ),
-
-      // Center(
-      //   child: Column(
-      //     mainAxisSize: MainAxisSize.max,
-      //     children: [
-      //       Row(
-      //         mainAxisAlignment: MainAxisAlignment.start,
-      //         children: [
-      //           Container(
-      //             padding: const EdgeInsets.all(8),
-      //             height: maxWidth(context) * 0.3,
-      //             width: maxWidth(context) * 0.3,
-      //             decoration: const BoxDecoration(
-      //               shape: BoxShape.circle,
-      //               color: Colors.grey,
-      //             ),
-      //             child: Stack(
-      //               children: [
-      //                 const Center(
-      //                   child: CircleAvatar(
-      //                     radius: 55,
-      //                     backgroundImage:
-      //                         AssetImage("assets/images/profile.png"),
-      //                   ),
-      //                 ),
-      //                 Align(
-      //                   alignment: Alignment.bottomRight,
-      //                   child: InkWell(
-      //                     onTap: () async {
-      //                       final imagePicker = ImagePicker();
-      //                       XFile? image;
-
-      //                       final permissionStatus =
-      //                           await Permission.mediaLibrary.isGranted ||
-      //                               await Permission.mediaLibrary.isLimited;
-      //                       if (permissionStatus) {
-      //                         image = await imagePicker.pickImage(
-      //                             source: ImageSource.gallery, imageQuality: 5);
-      //                         if (image != null) {
-      //                           // print(image.path);
-      //                           // image.
-      //                           // user?.updatePhotoURL(photoURL)
-      //                           // await imageCompressUseCase.compressImage(image.path, (file) {
-      //                           //   compressedImage(file);
-      //                           // });
-      //                           // compressedImage(File(image.path));
-      //                         }
-      //                       } else {
-      //                         bool hasPermission = await Permission.mediaLibrary
-      //                                 .request()
-      //                                 .isGranted ||
-      //                             await Permission.mediaLibrary
-      //                                 .request()
-      //                                 .isLimited;
-      //                         if (hasPermission) {
-      //                           image = await imagePicker.pickImage(
-      //                               source: ImageSource.gallery);
-      //                           if (image != null) {
-      //                             // print(image.path);
-      //                             // await imageCompressUseCase.compressImage(image.path, (file) {
-      //                             //   compressedImage(file);
-      //                             // });
-      //                             // compressedImage(File(image.path));
-      //                           }
-      //                         }
-      //                       }
-      //                     },
-      //                     child: const Icon(
-      //                       Icons.photo,
-      //                     ),
-      //                   ),
-      //                 )
-      //               ],
-      //             ),
-      //           ),
-      //           const SizedBox(
-      //             width: 20,
-      //           ),
-      //           Row(
-      //             crossAxisAlignment: CrossAxisAlignment.end,
-      //             children: [
-      //               Column(
-      //                 crossAxisAlignment: CrossAxisAlignment.start,
-      //                 children: [
-      //                   Text(
-      //                       FirebaseAuth.instance.currentUser?.displayName ??
-      //                           "User",
-      //                       style: kStyle18B),
-      //                   Text(FirebaseAuth.instance.currentUser?.email ?? "N/A",
-      //                       style: kStyle12),
-      //                 ],
-      //               ),
-      //               IconButton(
-      //                   onPressed: () {
-      //                     showDialog(
-      //                       context: context,
-      //                       builder: (context) {
-      //                         return AlertDialog(
-      //                           title: const Text("Update"),
-      //                           content: Column(
-      //                             mainAxisSize: MainAxisSize.min,
-      //                             children: [
-      //                               TextField(
-      //                                 controller: displayNameController,
-      //                                 decoration: const InputDecoration(
-      //                                   hintText: "Display Name",
-      //                                   border: OutlineInputBorder(),
-      //                                 ),
-      //                               ),
-      //                             ],
-      //                           ),
-      //                           actions: [
-      //                             TextButton(
-      //                               onPressed: () {
-      //                                 Navigator.pop(context);
-      //                               },
-      //                               child: const Text("Cancel"),
-      //                             ),
-      //                             TextButton(
-      //                               onPressed: () async {
-      //                                 final displayName =
-      //                                     displayNameController.text;
-
-      //                                 if (displayName.isNotEmpty) {
-      //                                   await user
-      //                                       ?.updateDisplayName(displayName);
-      //                                 }
-      //                                 Navigator.pop(context);
-      //                                 displayNameController.clear();
-      //                               },
-      //                               child: const Text("Update"),
-      //                             )
-      //                           ],
-      //                         );
-      //                       },
-      //                     );
-      //                   },
-      //                   icon: const Icon(Icons.edit))
-      //             ],
-      //           ),
-      //         ],
-      //       ),
-      //       // StreamBuilder(stream: stream, builder: builder)
-
-      //       ElevatedButton(
-      //           onPressed: () async {
-      //             await FirebaseAuth.instance.signOut().then((value) async {
-      //               final preference = await SharedPreferences.getInstance();
-      //               await preference.remove("uid");
-      //               pushAndRemoveUpto(
-      //                   context: context, screen: const LoginScreen());
-      //             });
-      //           },
-      //           child: const Text("Logout")),
-      //       ElevatedButton(
-      //           onPressed: () async {
-      //             await user?.updateDisplayName("Test User");
-      //           },
-      //           child: const Text("Update Display Name")),
-      //     ],
-      //   ),
-      // ),
     );
   }
 }
