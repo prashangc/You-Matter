@@ -17,6 +17,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   List<GlobalKey<FormState>> formKeys =
       List.generate(5, (index) => GlobalKey<FormState>());
   RegisterModel registerModel = RegisterModel();
+  bool isTherapist = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,11 +48,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     'REGISTER A HOTEL',
                     style: kStyle18B,
                   ),
-                  formCard(
-                    context,
-                    registerModel,
-                    formKeys,
-                  ),
+                  formCard(context, registerModel, formKeys, isTherapist),
+                  CheckboxListTile(
+                    contentPadding: EdgeInsets.zero,
+                    dense: true,
+                    title: const Text("Are you a therapist?"),
+                    controlAffinity: ListTileControlAffinity.leading,
+                    value: isTherapist,
+                    onChanged: (value) {
+                      setState(() {
+                        isTherapist = value ?? false;
+                      });
+                    },
+                  )
                 ],
               ),
             ),

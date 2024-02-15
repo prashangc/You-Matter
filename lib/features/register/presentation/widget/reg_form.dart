@@ -7,7 +7,7 @@ import 'package:you_matter/core/utils/text_form_field.dart';
 import 'package:you_matter/features/register/controller/reg_controller.dart';
 import 'package:you_matter/features/register/model/register_model.dart';
 
-Widget formCard(context, RegisterModel model, formKeys) {
+Widget formCard(context, RegisterModel model, formKeys, bool isTherapist) {
   return Container(
     padding: const EdgeInsets.all(24.0),
     decoration: BoxDecoration(
@@ -105,7 +105,7 @@ Widget formCard(context, RegisterModel model, formKeys) {
           height: 50.0,
           text: 'Register',
           myTap: () {
-            registerController.onBtnCick(context, model);
+            registerController.onBtnCick(context, model, isTherapist);
           },
           validateKeys: formKeys,
         ),

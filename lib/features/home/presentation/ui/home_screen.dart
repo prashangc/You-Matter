@@ -6,6 +6,8 @@ import 'package:you_matter/features/home/presentation/widgets/explore.dart';
 import 'package:you_matter/features/home/presentation/widgets/therapist.dart';
 import 'package:you_matter/services/global_bloc/get_bloc/main_get_bloc.dart';
 
+import '../widgets/therapist_list.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
@@ -28,23 +30,23 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SizedBox(
         width: maxWidth(context),
         height: maxHeight(context),
-        child: Column(
+        child: const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            exploreCard(context),
-            Expanded(
-              child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                child: Column(
-                  children: [
-                    sizedBox16(),
-                    categoryCard(context, categoryBloc),
-                    sizedBox16(),
-                    therapistCard(context, therapistBloc),
-                  ],
-                ),
-              ),
-            ),
+            TherapistList()
+            // exploreCard(context),
+            // const SingleChildScrollView(
+            //   physics: BouncingScrollPhysics(),
+            //   child: Column(
+            //     children: [
+            //       // sizedBox16(),
+            //       // categoryCard(context, categoryBloc),
+            //       // sizedBox16(),
+            //       // therapistCard(context, therapistBloc),
+            //       // TherapistList()
+            //     ],
+            //   ),
+            // ),
           ],
         ),
       ),

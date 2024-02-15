@@ -16,7 +16,8 @@ class RegisterController {
   StateHandlerBloc confirmPwValidationBloc = StateHandlerBloc();
   TextEditingController mapController = TextEditingController();
   final firebaseAuth = FirebaseAuth.instance;
-  onBtnCick(context, RegisterModel model) async {
+
+  Future<void> onBtnCick(context, RegisterModel model, bool isTherapist) async {
     bool internetStatus = await checkInternetConnection(context);
     MainPostBloc bloc = BlocProvider.of<MainPostBloc>(context);
     if (internetStatus == true) {
@@ -27,7 +28,8 @@ class RegisterController {
             .createUserWithEmailAndPassword(
                 email: model.email!, password: model.password!)
             .then((value) async {
-          await createUserInFireStore(value.user, model.name);
+          await createUserInFireStore(value.user, model.name, isTherapist);
+          await firebaseAuth.currentUser?.updateDisplayName(model.name);
         });
         bloc.add(SuccessEvent(
             context: context, msg: 'User account successfully created'));
@@ -51,7 +53,8 @@ class RegisterController {
     }
   }
 
-  Future<void> createUserInFireStore(User? user, String? username) async {
+  Future<void> createUserInFireStore(
+      User? user, String? username, bool isTherapist) async {
     if (user != null && username != null) {
       await FirebaseQueryHelper.firebaseFireStore
           .collection('users')
@@ -59,6 +62,8 @@ class RegisterController {
           .set({
         'username': username,
         'email': user.email,
+        'isTherapist': isTherapist,
+        "uid": user.uid,
         'photoUrl': "",
         'createdOn': DateTime.now(),
       });

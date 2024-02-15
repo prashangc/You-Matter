@@ -129,6 +129,7 @@ Widget profile(context) {
                                   .collection("users")
                                   .doc(user?.uid)
                                   .update({'username': displayName});
+                              await user?.updateDisplayName(displayName);
                             }
                             Navigator.pop(context);
                             displayNameController.clear();
