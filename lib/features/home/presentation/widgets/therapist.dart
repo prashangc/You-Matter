@@ -1,11 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:you_matter/core/theme/colors.dart';
-import 'package:you_matter/core/theme/textstyle.dart';
-import 'package:you_matter/core/utils/grid_view_delegate.dart';
-import 'package:you_matter/core/utils/my_bloc_builder.dart';
-import 'package:you_matter/core/utils/my_cached_network_image.dart';
-import 'package:you_matter/core/utils/my_rating_bar.dart';
-import 'package:you_matter/core/utils/sizes.dart';
 import 'package:you_matter/features/home/presentation/widgets/therapist_list.dart';
 
 Widget therapistCard(context, hotelBloc) {

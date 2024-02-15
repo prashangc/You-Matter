@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:you_matter/core/theme/colors.dart';
 import 'package:you_matter/core/utils/sizes.dart';
-import 'package:you_matter/features/home/presentation/widgets/category.dart';
-import 'package:you_matter/features/home/presentation/widgets/explore.dart';
-import 'package:you_matter/features/home/presentation/widgets/therapist.dart';
 import 'package:you_matter/services/global_bloc/get_bloc/main_get_bloc.dart';
 
 import '../widgets/therapist_list.dart';

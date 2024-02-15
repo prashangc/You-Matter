@@ -158,7 +158,7 @@ class _TherapistListState extends State<TherapistList> {
                                                         await therapistController
                                                             .onTherapistBookingRequest(
                                                                 time:
-                                                                    selectedDate!,
+                                                                    selectedTime!,
                                                                 date:
                                                                     selectedDate!,
                                                                 username: FirebaseAuth

@@ -6,6 +6,7 @@ import 'package:you_matter/core/utils/my_check_internet_connection.dart';
 import 'package:you_matter/core/utils/my_pop_up.dart';
 import 'package:you_matter/features/dashboard/presentation/ui/base.dart';
 import 'package:you_matter/features/login/model/login_model.dart';
+import 'package:you_matter/services/firebase/firebase_query_handler.dart';
 import 'package:you_matter/services/global_bloc/post_bloc/main_bloc.dart';
 import 'package:you_matter/services/global_bloc/post_bloc/main_bloc_event.dart';
 
@@ -22,15 +23,25 @@ class LoginController {
             await firebaseAuth.signInWithEmailAndPassword(
                 email: model.email!, password: model.password!);
         final preference = await SharedPreferences.getInstance();
-        if (userCredential.user?.uid != null) {
+        String? uid = userCredential.user?.uid;
+        if (uid != null) {
           await preference.setString("uid", userCredential.user!.uid);
+
+          await FirebaseQueryHelper.getSingleDocument(
+                  collectionPath: 'users', docID: uid)
+              .then((value) async {
+            final userData = value?.data() as Map<String, dynamic>;
+            await preference.setBool(
+                "isTherapist", userData['isTherapist'] as bool);
+            pushTo(
+                context: context,
+                screen: BasePage(
+                    currentIndex: 0,
+                    isTherapist: userData['isTherapist'] as bool));
+            bloc.add(
+                SuccessEvent(context: context, msg: 'Login successfully !!!'));
+          });
         }
-        pushTo(
-            context: context,
-            screen: const BasePage(
-              currentIndex: 0,
-            ));
-        bloc.add(SuccessEvent(context: context, msg: 'Login successfully !!!'));
       } catch (e) {
         bloc.add(
           ErrorEvent(

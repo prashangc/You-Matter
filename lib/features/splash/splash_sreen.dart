@@ -22,11 +22,13 @@ class _SplashScreenState extends State<SplashScreen> {
     Future.delayed(const Duration(seconds: 2), () async {
       final preference = await SharedPreferences.getInstance();
       String? uid = preference.getString("uid");
+      bool? isTherapist = preference.getBool("isTherapist");
       if (uid != null) {
         pushTo(
             context: context,
-            screen: const BasePage(
+            screen: BasePage(
               currentIndex: 2,
+              isTherapist: isTherapist ?? false,
             ));
       } else {
         pushTo(context: context, screen: const LoginScreen());

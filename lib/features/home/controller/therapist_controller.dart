@@ -28,7 +28,7 @@ class TherapistController {
       'date': date,
       'patientId': uid,
       'therapistId': therapistID,
-      'status': "initiated",
+      'status': "pending",
       'requestedOn': DateTime.now(),
     });
   }
