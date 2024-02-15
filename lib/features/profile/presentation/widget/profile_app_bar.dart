@@ -29,7 +29,7 @@ Widget myAppBar(context) {
                 FirebaseAuth.instance.signOut();
 
                 final preference = await SharedPreferences.getInstance();
-                preference.clear();
+                await preference.clear();
                 pushAndRemoveUpto(
                     context: context, screen: const LoginScreen());
               },

@@ -9,8 +9,9 @@ import 'package:you_matter/services/state/state_bloc.dart';
 class DashboardController {
   List<Widget> screens(bool isTherapist) => [
         if (!isTherapist) ...{const HomeScreen()},
-        const ChatScreen(
+        ChatScreen(
           chatId: '',
+          isTherapist: isTherapist,
         ),
         const ProfileScreen(),
         if (isTherapist) ...{const RequestScreen()},

@@ -4,7 +4,12 @@ import 'package:you_matter/core/theme/colors.dart';
 import 'package:you_matter/core/theme/textstyle.dart';
 import 'package:you_matter/core/utils/sizes.dart';
 
-Widget therapistDetails(context) {
+Widget therapistDetails(
+  context, {
+  String? name,
+  String? email,
+  String? imageUrl,
+}) {
   return Container(
     padding: const EdgeInsets.all(12.0),
     decoration: BoxDecoration(
@@ -29,11 +34,11 @@ Widget therapistDetails(context) {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                FirebaseAuth.instance.currentUser?.displayName ?? "User",
+                name ?? "User",
                 style: kStyle14B,
               ),
               Text(
-                FirebaseAuth.instance.currentUser?.email ?? "N/A",
+                email ?? "N/A",
                 style: kStyle12,
               ),
             ],

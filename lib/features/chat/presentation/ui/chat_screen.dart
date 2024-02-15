@@ -1,15 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:you_matter/core/theme/colors.dart';
 import 'package:you_matter/core/utils/sizes.dart';
+import 'package:you_matter/core/utils/time_utils.dart';
 import 'package:you_matter/features/chat/presentation/widget/chat_app_bar.dart';
 import 'package:you_matter/features/chat/presentation/widget/chat_page.dart';
 import 'package:you_matter/features/chat/presentation/widget/therapist_details.dart';
 
+import '../../../../services/firebase/firebase_query_handler.dart';
+
 class ChatScreen extends StatefulWidget {
   final String chatId;
-
-  const ChatScreen({Key? key, required this.chatId}) : super(key: key);
+  final bool isTherapist;
+  const ChatScreen({Key? key, required this.chatId, required this.isTherapist})
+      : super(key: key);
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
@@ -34,6 +40,7 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
+  String? myID = FirebaseAuth.instance.currentUser!.uid;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,54 +51,88 @@ class _ChatScreenState extends State<ChatScreen> {
         toolbarHeight: 0.0,
       ),
       backgroundColor: ColorConstant.backgroundColor,
-      body: SizedBox(
-        width: maxWidth(context),
-        height: maxHeight(context),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            chatAppBar(),
-            Expanded(
-              child: Stack(
-                children: [
-                  Column(
-                    children: [
-                      Container(
-                        decoration: BoxDecoration(
-                            color: ColorConstant.kPrimary,
-                            borderRadius: const BorderRadius.only(
-                              bottomLeft: Radius.circular(20.0),
-                              bottomRight: Radius.circular(20.0),
-                            )),
-                        width: maxWidth(context),
-                        height: 50.0,
+      body: StreamBuilder(
+          stream: FirebaseQueryHelper.firebaseFireStore
+              .collection('bookings')
+              .snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else {
+              final bookings = snapshot.data?.docs.where((element) {
+                bool containsMyID = (widget.isTherapist
+                    ? (element.id.split(":").first == myID)
+                    : (element.id.split(":").last == myID));
+                bool isToday = element.data()['date'] ==
+                    DateFormat("EEEE, MMM d").format(DateTime.now());
+                return containsMyID && isToday;
+              }).toList();
+              final indexOfLatestBooking = findClosestTimeIndex(
+                  bookings?.map((e) => "${e.data()['time']}").toList() ?? []);
+              final latestBooking =
+                  bookings?.elementAtOrNull(indexOfLatestBooking)?.data();
+              return SizedBox(
+                width: maxWidth(context),
+                height: maxHeight(context),
+                child: (latestBooking != null && latestBooking.isNotEmpty)
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          chatAppBar(),
+                          Expanded(
+                            child: Stack(
+                              children: [
+                                Column(
+                                  children: [
+                                    Container(
+                                      decoration: BoxDecoration(
+                                          color: ColorConstant.kPrimary,
+                                          borderRadius: const BorderRadius.only(
+                                            bottomLeft: Radius.circular(20.0),
+                                            bottomRight: Radius.circular(20.0),
+                                          )),
+                                      width: maxWidth(context),
+                                      height: 50.0,
+                                    ),
+                                    Expanded(
+                                      child: Container(
+                                        width: maxWidth(context),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Positioned(
+                                  top: 25.0,
+                                  bottom: 25.0,
+                                  left: 20.0,
+                                  right: 20.0,
+                                  child: Column(
+                                    children: [
+                                      therapistDetails(
+                                        context,
+                                        name:
+                                            "${widget.isTherapist ? latestBooking['patient']['username'] : latestBooking['therapist']['username']}",
+                                        email:
+                                            "${widget.isTherapist ? latestBooking['patient']['email'] : latestBooking['therapist']['email']}",
+                                      ),
+                                      sizedBox16(),
+                                      chatPage(context),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ],
+                      )
+                    : const Center(
+                        child: Text("No Chats available today!!"),
                       ),
-                      Expanded(
-                        child: Container(
-                          width: maxWidth(context),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Positioned(
-                    top: 25.0,
-                    bottom: 25.0,
-                    left: 20.0,
-                    right: 20.0,
-                    child: Column(
-                      children: [
-                        therapistDetails(context),
-                        sizedBox16(),
-                        chatPage(context),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
+              );
+            }
+          }),
     );
   }
 }
