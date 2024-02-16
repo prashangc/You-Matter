@@ -11,7 +11,6 @@ class BasePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("Nabin Gurung $isTherapist");
     return StreamBuilder<dynamic>(
         initialData: currentIndex,
         stream: dashboardController.baseBloc.stateStream,
@@ -19,38 +18,25 @@ class BasePage extends StatelessWidget {
           return Scaffold(
             body: dashboardController.screens(isTherapist)[s.data],
             bottomNavigationBar: SweetNavBar(
-              backgroundColor: Colors.white,
               currentIndex: 0,
               paddingBackgroundColor: ColorConstant.backgroundColor,
               items: [
-                if (!isTherapist) ...{
-                  SweetNavBarItem(
-                    sweetBackground: ColorConstant.kPrimary,
-                    iconColors: [ColorConstant.kBlack, ColorConstant.kGrey],
-                    sweetIcon: const Icon(Icons.home_outlined),
-                    sweetLabel: 'Home $isTherapist',
-                  )
-                },
                 SweetNavBarItem(
+                  sweetBackground: ColorConstant.backgroundColor,
+                  iconColors: [ColorConstant.kBlack, ColorConstant.kGrey],
+                  sweetIcon: const Icon(Icons.home_outlined),
+                  sweetLabel: 'Home $isTherapist',
+                ),
+                SweetNavBarItem(
+                    sweetBackground: ColorConstant.backgroundColor,
                     iconColors: [ColorConstant.kBlack, ColorConstant.kGrey],
                     sweetIcon: const Icon(Icons.chat_outlined),
                     sweetLabel: 'Chat'),
                 SweetNavBarItem(
+                    sweetBackground: ColorConstant.backgroundColor,
                     iconColors: [ColorConstant.kBlack, ColorConstant.kGrey],
                     sweetIcon: const Icon(Icons.perm_identity_outlined),
                     sweetLabel: 'Profile'),
-                if (isTherapist) ...{
-                  SweetNavBarItem(
-                      iconColors: [ColorConstant.kBlack, ColorConstant.kGrey],
-                      sweetIcon: const Icon(Icons.request_quote),
-                      sweetLabel: 'Request')
-                },
-                if (!isTherapist) ...{
-                  SweetNavBarItem(
-                      iconColors: [ColorConstant.kBlack, ColorConstant.kGrey],
-                      sweetIcon: const Icon(Icons.book_online),
-                      sweetLabel: 'My Booking')
-                },
               ],
               onTap: (index) {
                 dashboardController.baseBloc.storeData(data: index);

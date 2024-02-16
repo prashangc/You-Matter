@@ -31,7 +31,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           decoration: const BoxDecoration(
             image: DecorationImage(
               image: AssetImage(
-                "assets/mobile/register_bg.jpg",
+                "assets/images/register.jpg",
               ),
               fit: BoxFit.cover,
             ),

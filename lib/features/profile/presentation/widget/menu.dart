@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:you_matter/core/route/route.dart';
 import 'package:you_matter/core/theme/colors.dart';
 import 'package:you_matter/core/theme/textstyle.dart';
 import 'package:you_matter/core/utils/sizes.dart';
+import 'package:you_matter/features/booking/presentation/ui/my_booking_screen.dart';
 
 Widget menu(context) {
   return Expanded(
@@ -25,10 +27,12 @@ Widget menu(context) {
               sizedBox8(),
               myCard(
                 context: context,
-                title: 'Verify Phone',
-                subtitle: 'Verify your phone number',
-                icon: Icons.call_outlined,
-                myTap: () {},
+                title: 'My Appointments',
+                subtitle: 'View your appointment history',
+                icon: Icons.health_and_safety_outlined,
+                myTap: () {
+                  pushTo(context: context, screen: const MyBookings());
+                },
               ),
               myCard(
                 context: context,

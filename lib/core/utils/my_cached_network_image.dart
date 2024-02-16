@@ -32,7 +32,7 @@ Widget myCachedNetworkImage({
             ),
           )),
       errorWidget: (context, url, error) => Image.asset(
-            'assets/app/logo.png',
+            'assets/images/profile.png',
           ));
 }
 
@@ -71,7 +71,7 @@ Widget myCachedNetworkImageCircle({
         shape: BoxShape.circle,
         color: ColorConstant.kWhite,
       ),
-      child: Image.asset('assets/mobile/logo.png'),
+      child: Image.asset('assets/images/profile.png'),
     ),
   );
 }

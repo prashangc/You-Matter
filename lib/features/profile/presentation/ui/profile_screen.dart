@@ -34,7 +34,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             myAppBar(context),
-            Expanded(
+            Flexible(
               child: Stack(
                 children: [
                   Column(
@@ -48,11 +48,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             )),
                         width: maxWidth(context),
                         height: 50.0,
-                      ),
-                      Expanded(
-                        child: Container(
-                          width: maxWidth(context),
-                        ),
                       ),
                     ],
                   ),

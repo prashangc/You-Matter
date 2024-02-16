@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:you_matter/core/theme/colors.dart';
+import 'package:you_matter/core/utils/info_card.dart';
 import 'package:you_matter/core/utils/sizes.dart';
 import 'package:you_matter/core/utils/time_utils.dart';
 import 'package:you_matter/features/chat/presentation/widget/chat_app_bar.dart';
@@ -56,81 +57,93 @@ class _ChatScreenState extends State<ChatScreen> {
               .collection('bookings')
               .snapshots(),
           builder: (context, snapshot) {
+            final bookings = snapshot.data?.docs.where((element) {
+              bool containsMyID = (widget.isTherapist
+                  ? (element.id.split(":").first == myID)
+                  : (element.id.split(":").last == myID));
+              bool isToday = element.data()['date'] ==
+                  DateFormat("EEEE, MMM d").format(DateTime.now());
+              return containsMyID && isToday;
+            }).toList();
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
                 child: CircularProgressIndicator(),
               );
-            } else {
-              final bookings = snapshot.data?.docs.where((element) {
-                bool containsMyID = (widget.isTherapist
-                    ? (element.id.split(":").first == myID)
-                    : (element.id.split(":").last == myID));
-                bool isToday = element.data()['date'] ==
-                    DateFormat("EEEE, MMM d").format(DateTime.now());
-                return containsMyID && isToday;
-              }).toList();
-              final indexOfLatestBooking = findClosestTimeIndex(
-                  bookings?.map((e) => "${e.data()['time']}").toList() ?? []);
-              final latestBooking =
-                  bookings?.elementAtOrNull(indexOfLatestBooking)?.data();
+            }
+            // else if (bookings == null || bookings.isEmpty) {
+            //   return const Center(
+            //     child: Text("No Chats available today!!"),
+            //   );
+            // }
+            else {
+              int? indexOfLatestBooking;
+              Map<String, dynamic>? latestBooking;
+              if (bookings == null || bookings.isEmpty) {
+              } else {
+                indexOfLatestBooking = findClosestTimeIndex(
+                    bookings.map((e) => "${e.data()['time']}").toList() ?? []);
+                latestBooking =
+                    bookings.elementAtOrNull(indexOfLatestBooking)?.data();
+              }
+
               return SizedBox(
-                width: maxWidth(context),
-                height: maxHeight(context),
-                child: (latestBooking != null && latestBooking.isNotEmpty)
-                    ? Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          chatAppBar(),
-                          Expanded(
-                            child: Stack(
+                  width: maxWidth(context),
+                  height: maxHeight(context),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      chatAppBar(),
+                      Expanded(
+                        child: Stack(
+                          children: [
+                            Column(
                               children: [
-                                Column(
-                                  children: [
-                                    Container(
-                                      decoration: BoxDecoration(
-                                          color: ColorConstant.kPrimary,
-                                          borderRadius: const BorderRadius.only(
-                                            bottomLeft: Radius.circular(20.0),
-                                            bottomRight: Radius.circular(20.0),
-                                          )),
-                                      width: maxWidth(context),
-                                      height: 50.0,
-                                    ),
-                                    Expanded(
-                                      child: Container(
-                                        width: maxWidth(context),
-                                      ),
-                                    ),
-                                  ],
+                                Container(
+                                  decoration: BoxDecoration(
+                                      color: ColorConstant.kPrimary,
+                                      borderRadius: const BorderRadius.only(
+                                        bottomLeft: Radius.circular(20.0),
+                                        bottomRight: Radius.circular(20.0),
+                                      )),
+                                  width: maxWidth(context),
+                                  height: 50.0,
                                 ),
-                                Positioned(
-                                  top: 25.0,
-                                  bottom: 25.0,
-                                  left: 20.0,
-                                  right: 20.0,
-                                  child: Column(
-                                    children: [
-                                      therapistDetails(
-                                        context,
-                                        name:
-                                            "${widget.isTherapist ? latestBooking['patient']['username'] : latestBooking['therapist']['username']}",
-                                        email:
-                                            "${widget.isTherapist ? latestBooking['patient']['email'] : latestBooking['therapist']['email']}",
-                                      ),
-                                      sizedBox16(),
-                                      chatPage(context),
-                                    ],
+                                Expanded(
+                                  child: Container(
+                                    width: maxWidth(context),
                                   ),
-                                )
+                                ),
                               ],
                             ),
-                          ),
-                        ],
-                      )
-                    : const Center(
-                        child: Text("No Chats available today!!"),
+                            Positioned(
+                              top: 25.0,
+                              bottom: 25.0,
+                              left: 20.0,
+                              right: 20.0,
+                              child: Column(
+                                children: [
+                                  latestBooking == null
+                                      ? infoCard(
+                                          context: context,
+                                          text:
+                                              'Please book a therapist to consult via chat messages.')
+                                      : therapistDetails(
+                                          context,
+                                          name:
+                                              "${widget.isTherapist ? latestBooking['patient']['username'] : latestBooking['therapist']['username']}",
+                                          email:
+                                              "${widget.isTherapist ? latestBooking['patient']['email'] : latestBooking['therapist']['email']}",
+                                        ),
+                                  sizedBox16(),
+                                  chatPage(context),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
                       ),
-              );
+                    ],
+                  ));
             }
           }),
     );
