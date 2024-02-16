@@ -61,6 +61,7 @@ class _ChatScreenState extends State<ChatScreen> {
               bool containsMyID = (widget.isTherapist
                   ? (element.id.split(":").first == myID)
                   : (element.id.split(":").last == myID));
+
               bool isToday = element.data()['date'] ==
                   DateFormat("EEEE, MMM d").format(DateTime.now());
               return containsMyID && isToday;

@@ -1,10 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:you_matter/core/theme/colors.dart';
 import 'package:you_matter/core/utils/sizes.dart';
 import 'package:you_matter/features/profile/presentation/widget/menu.dart';
 import 'package:you_matter/features/profile/presentation/widget/profile.dart';
 import 'package:you_matter/features/profile/presentation/widget/profile_app_bar.dart';
+
+import '../../../../services/firebase/firebase_query_handler.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -16,7 +19,6 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   final displayNameController = TextEditingController();
   final user = FirebaseAuth.instance.currentUser;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,13 +58,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     bottom: 25.0,
                     left: 20.0,
                     right: 20.0,
-                    child: Column(
-                      children: [
-                        profile(context),
-                        sizedBox16(),
-                        menu(context),
-                      ],
-                    ),
+                    child: StreamBuilder(
+                        stream: FirebaseQueryHelper.getSingleDocumentAsStream(
+                            collectionPath: 'users', docID: user?.uid ?? ""),
+                        builder: (context, snapshot) {
+                          Map<String, dynamic>? data = snapshot.data?.data();
+                          return Column(
+                            children: [
+                              profile(context, data),
+                              sizedBox16(),
+                              menu(context, data),
+                            ],
+                          );
+                        }),
                   )
                 ],
               ),

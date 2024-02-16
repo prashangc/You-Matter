@@ -8,7 +8,7 @@ import 'package:you_matter/core/utils/sizes.dart';
 import '../../../../services/firebase/firebase_query_handler.dart';
 import '../../controller/profile_controller.dart';
 
-Widget profile(context) {
+Widget profile(context, Map<String, dynamic>? data) {
   final displayNameController = TextEditingController();
   final user = FirebaseAuth.instance.currentUser;
 
@@ -26,49 +26,41 @@ Widget profile(context) {
     child: Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        StreamBuilder(
-            stream: FirebaseQueryHelper.getSingleDocumentAsStream(
-                collectionPath: 'users', docID: user?.uid ?? ""),
-            builder: (context, snapshot) {
-              Map<String, dynamic>? data = snapshot.data?.data();
-              String? url = data?['photoUrl'];
-              return InkWell(
-                onTap: () async {
-                  await profileController.onUpdateProfile(user);
-                },
-                child: url != null
-                    ? CachedNetworkImage(
-                        height: maxWidth(context) * 0.12,
-                        width: maxWidth(context) * 0.12,
-                        fit: BoxFit.cover,
-                        imageUrl: url ?? "",
-                        errorWidget: (context, url, error) {
-                          return Image.asset("assets/images/profile.png");
-                        },
-                        imageBuilder: (context, provider) {
-                          return Container(
-                            height: maxWidth(context) * 0.12,
-                            width: maxWidth(context) * 0.12,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                image: provider,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          );
-                        },
-                        placeholder: (context, url) {
-                          return const CircularProgressIndicator();
-                        },
-                      )
-                    : const CircleAvatar(
-                        radius: 25,
-                        backgroundImage:
-                            AssetImage("assets/images/profile.png"),
+        InkWell(
+          onTap: () async {
+            await profileController.onUpdateProfile(user);
+          },
+          child: data?['photoUrl'] != null
+              ? CachedNetworkImage(
+                  height: maxWidth(context) * 0.12,
+                  width: maxWidth(context) * 0.12,
+                  fit: BoxFit.cover,
+                  imageUrl: data?['photoUrl'] ?? "",
+                  errorWidget: (context, url, error) {
+                    return Image.asset("assets/images/profile.png");
+                  },
+                  imageBuilder: (context, provider) {
+                    return Container(
+                      height: maxWidth(context) * 0.12,
+                      width: maxWidth(context) * 0.12,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          image: provider,
+                          fit: BoxFit.cover,
+                        ),
                       ),
-              );
-            }),
+                    );
+                  },
+                  placeholder: (context, url) {
+                    return const CircularProgressIndicator();
+                  },
+                )
+              : const CircleAvatar(
+                  radius: 25,
+                  backgroundImage: AssetImage("assets/images/profile.png"),
+                ),
+        ),
         sizedBox16(),
         Expanded(
           child: StreamBuilder(

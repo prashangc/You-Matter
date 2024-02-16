@@ -3,9 +3,10 @@ import 'package:you_matter/core/route/route.dart';
 import 'package:you_matter/core/theme/colors.dart';
 import 'package:you_matter/core/theme/textstyle.dart';
 import 'package:you_matter/core/utils/sizes.dart';
+import 'package:you_matter/features/add_time/presentation/ui/add_time_screen.dart';
 import 'package:you_matter/features/booking/presentation/ui/my_booking_screen.dart';
 
-Widget menu(context) {
+Widget menu(context, Map<String, dynamic>? data) {
   return Expanded(
     child: Container(
       padding: const EdgeInsets.symmetric(vertical: 12.0),
@@ -48,6 +49,17 @@ Widget menu(context) {
                 icon: Icons.security_outlined,
                 myTap: () {},
               ),
+              if (data?['isTherapist'] == true) ...{
+                myCard(
+                  context: context,
+                  title: 'Schedule Time',
+                  subtitle: 'Schedule your time for today',
+                  icon: Icons.schedule,
+                  myTap: () {
+                    pushTo(context: context, screen: AddTimeScreen(data: data));
+                  },
+                )
+              },
               myCard(
                 context: context,
                 myTap: () {},

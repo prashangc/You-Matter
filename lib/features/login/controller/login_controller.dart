@@ -30,14 +30,14 @@ class LoginController {
           await FirebaseQueryHelper.getSingleDocument(
                   collectionPath: 'users', docID: uid)
               .then((value) async {
-            final userData = value?.data() as Map<String, dynamic>;
+            final userData = value?.data() as Map<String, dynamic>?;
             await preference.setBool(
-                "isTherapist", userData['isTherapist'] as bool);
+                "isTherapist", userData?['isTherapist'] as bool);
             pushTo(
                 context: context,
                 screen: BasePage(
                     currentIndex: 0,
-                    isTherapist: userData['isTherapist'] as bool));
+                    isTherapist: userData?['isTherapist'] as bool));
             bloc.add(
                 SuccessEvent(context: context, msg: 'Login successfully !!!'));
           });
