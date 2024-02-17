@@ -4,6 +4,7 @@ import 'package:you_matter/core/theme/textstyle.dart';
 import 'package:you_matter/core/utils/focus_remover.dart';
 import 'package:you_matter/core/utils/sizes.dart';
 import 'package:you_matter/features/register/model/register_model.dart';
+import 'package:you_matter/features/register/presentation/widget/category_sheet.dart';
 import 'package:you_matter/features/register/presentation/widget/reg_form.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -45,7 +46,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 children: [
                   sizedBox12(),
                   Text(
-                    'REGISTER A HOTEL',
+                    'REGISTER AN ACCOUNT',
                     style: kStyle18B,
                   ),
                   formCard(context, registerModel, formKeys, isTherapist),
@@ -55,10 +56,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     title: const Text("Are you a therapist?"),
                     controlAffinity: ListTileControlAffinity.leading,
                     value: isTherapist,
-                    onChanged: (value) {
-                      setState(() {
-                        isTherapist = value ?? false;
-                      });
+                    onChanged: (value) async {
+                      String? test = await showModalBottomSheet(
+                        context: context,
+                        backgroundColor: ColorConstant.backgroundColor,
+                        shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(20))),
+                        builder: (BuildContext ctx) {
+                          return categoryBottomModelSheet(context);
+                        },
+                      );
+                      if (test != null) {
+                        setState(() {
+                          isTherapist = value ?? false;
+                          registerModel.therapistCategory = test;
+                        });
+                      }
                     },
                   )
                 ],

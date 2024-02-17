@@ -3,6 +3,7 @@ class RegisterModel {
   String? email;
   String? password;
   String? phone;
+  String? therapistCategory;
   String? passwordConfirmation;
 
   RegisterModel({
@@ -10,6 +11,7 @@ class RegisterModel {
     this.email,
     this.phone,
     this.password,
+    this.therapistCategory,
     this.passwordConfirmation,
   });
 
@@ -18,6 +20,7 @@ class RegisterModel {
     email = json['email'];
     password = json['password'];
     phone = json['phone'];
+    therapistCategory = json['therapistCategory'];
     passwordConfirmation = json['password_confirmation'];
   }
 
@@ -27,6 +30,7 @@ class RegisterModel {
     data['email'] = email;
     data['phone'] = phone;
     data['password'] = password;
+    data['therapistCategory'] = therapistCategory;
     data['password_confirmation'] = passwordConfirmation;
     return data;
   }
