@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:you_matter/core/theme/colors.dart';
 import 'package:you_matter/core/theme/textstyle.dart';
 import 'package:you_matter/core/utils/sizes.dart';
+import 'package:you_matter/features/profile/presentation/widget/edit_profile_bottom_sheet.dart';
 
 import '../../../../services/firebase/firebase_query_handler.dart';
 import '../../controller/profile_controller.dart';
@@ -84,67 +85,31 @@ Widget profile(context, Map<String, dynamic>? data) {
               }),
         ),
         sizedBox16(),
-        Row(
-          children: [
-            GestureDetector(
-              onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      title: const Text("Update"),
-                      content: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          TextField(
-                            controller: displayNameController,
-                            decoration: const InputDecoration(
-                              hintText: "Display Name",
-                              border: OutlineInputBorder(),
-                            ),
-                          ),
-                        ],
-                      ),
-                      actions: [
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: const Text("Cancel"),
-                        ),
-                        TextButton(
-                          onPressed: () async {
-                            final displayName = displayNameController.text;
-
-                            if (displayName.isNotEmpty) {
-                              FirebaseQueryHelper.firebaseFireStore
-                                  .collection("users")
-                                  .doc(user?.uid)
-                                  .update({'username': displayName});
-                              await user?.updateDisplayName(displayName);
-                            }
-                            Navigator.pop(context);
-                            displayNameController.clear();
-                          },
-                          child: const Text("Update"),
-                        )
-                      ],
-                    );
-                  },
-                );
-              },
-              child: Text(
+        GestureDetector(
+          onTap: () async {
+            String? username = await editProfileBottomSheet(context: context);
+            if (username != null) {
+              FirebaseQueryHelper.firebaseFireStore
+                  .collection("users")
+                  .doc(user?.uid)
+                  .update({'username': username});
+              await user?.updateDisplayName(username);
+            }
+          },
+          child: Row(
+            children: [
+              Text(
                 'Edit',
                 style: kStyle14B.copyWith(color: ColorConstant.kOrange),
               ),
-            ),
-            sizedBox8(),
-            Icon(
-              Icons.edit,
-              color: ColorConstant.kOrange,
-              size: 14.0,
-            )
-          ],
+              sizedBox8(),
+              Icon(
+                Icons.edit,
+                color: ColorConstant.kOrange,
+                size: 14.0,
+              )
+            ],
+          ),
         )
       ],
     ),

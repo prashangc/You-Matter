@@ -8,47 +8,41 @@ Widget myEmptyCard({
   required String emptyMsg,
   required String subTitle,
 }) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.center,
-    children: [
-      sizedBox32(),
-      Expanded(
-        child: Image.asset(
-          'assets/error/error.png',
-        ),
+  return Container(
+    padding: const EdgeInsets.all(12.0),
+    decoration: BoxDecoration(
+      color: ColorConstant.kWhite,
+      borderRadius: const BorderRadius.all(
+        Radius.circular(30.0),
       ),
-      sizedBox2(),
-      SizedBox(
-        width: maxWidth(context) / 2,
-        child: Column(
+    ),
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(
+          Icons.refresh_outlined,
+          color: ColorConstant.kPrimary,
+          size: 30.0,
+        ),
+        sizedBox12(),
+        Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
-              Icons.refresh_outlined,
-              color: ColorConstant.kPrimary,
-              size: 30.0,
-            ),
-            sizedBox12(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  emptyMsg,
-                  style: kStyle14B.copyWith(
-                    color: ColorConstant.kPrimary,
-                  ),
-                ),
-              ],
-            ),
-            sizedBox2(),
             Text(
-              subTitle,
-              overflow: TextOverflow.ellipsis,
-              style: kStyle12.copyWith(color: ColorConstant.kRed),
+              emptyMsg,
+              style: kStyle14B.copyWith(
+                color: ColorConstant.kPrimary,
+              ),
             ),
           ],
         ),
-      ),
-    ],
+        sizedBox2(),
+        Text(
+          subTitle,
+          overflow: TextOverflow.ellipsis,
+          style: kStyle12.copyWith(color: ColorConstant.kRed),
+        ),
+      ],
+    ),
   );
 }

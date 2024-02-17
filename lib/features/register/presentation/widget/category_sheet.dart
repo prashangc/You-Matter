@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:you_matter/core/theme/colors.dart';
 import 'package:you_matter/core/utils/button.dart';
-import 'package:you_matter/core/utils/my_toast.dart';
+import 'package:you_matter/core/utils/my_snackbar.dart';
 import 'package:you_matter/core/utils/sizes.dart';
 import 'package:you_matter/services/firebase/firebase_query_handler.dart';
 import 'package:you_matter/services/state/state_bloc.dart';
@@ -94,8 +94,9 @@ Widget categoryBottomModelSheet(context) {
                                         text: 'Save',
                                         myTap: () {
                                           if (s.data == null) {
-                                            myToast.toast(
-                                                msg:
+                                            mySnackbar.mySnackBarBtn(
+                                                bgColor: ColorConstant.kRed,
+                                                text:
                                                     'Select atleast one category',
                                                 context: context);
                                           } else {

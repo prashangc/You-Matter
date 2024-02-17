@@ -1,10 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:you_matter/core/theme/colors.dart';
+import 'package:you_matter/features/booking/presentation/widget/booking_app_bar.dart';
+import 'package:you_matter/features/booking/presentation/widget/booking_menu.dart';
+import 'package:you_matter/services/state/state_bloc.dart';
 
 import '../../../../core/utils/sizes.dart';
-import '../../../../services/firebase/firebase_query_handler.dart';
 
 class MyBookings extends StatefulWidget {
   const MyBookings({
@@ -16,6 +16,7 @@ class MyBookings extends StatefulWidget {
 }
 
 class _MyBookingsState extends State<MyBookings> {
+  StateHandlerBloc lengthBloc = StateHandlerBloc();
   @override
   void initState() {
     super.initState();
@@ -25,75 +26,58 @@ class _MyBookingsState extends State<MyBookings> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("My Bookings"),
+        elevation: 0.0,
+        backgroundColor: ColorConstant.kPrimary,
+        automaticallyImplyLeading: false,
+        toolbarHeight: 0.0,
       ),
-      body: StreamBuilder(
-        stream: FirebaseQueryHelper.firebaseFireStore
-            .collection('bookings')
-            .snapshots(),
-        builder: (context, snapshot) {
-          final bookings = snapshot.data?.docs
-              .where((element) =>
-                  element.id.split(":").last ==
-                  FirebaseAuth.instance.currentUser!.uid)
-              .toList();
-
-          return Expanded(
-              child: ListView.separated(
-            separatorBuilder: (context, index) {
-              return sizedBox12();
-            },
-            itemCount: bookings?.length ?? 0,
-            itemBuilder: (context, index) {
-              final booking = bookings?[index].data();
-              final requestedOn = booking?['requestedOn'] as Timestamp;
-              final patientID = booking?['patientId'] as String;
-              final status = booking?['status'] as String;
-              bool isRejected = status == "rejected";
-              bool isAccepted = status == "accepted";
-              bool isPending = status == "pending";
-              return Container(
-                padding: const EdgeInsets.all(10),
-                margin: const EdgeInsets.symmetric(horizontal: 10),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                      color: Colors.black,
-                    )),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          status,
-                          style: TextStyle(
-                            color: isRejected
-                                ? Colors.red
-                                : isAccepted
-                                    ? Colors.green
-                                    : isPending
-                                        ? Colors.blue
-                                        : null,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
+      backgroundColor: ColorConstant.backgroundColor,
+      body: SizedBox(
+        width: maxWidth(context),
+        height: maxHeight(context),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            bookingAppBar(context, 'Appointments', 'You Booked', lengthBloc),
+            Expanded(
+              flex: 1,
+              child: Stack(
+                children: [
+                  Column(
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                            color: ColorConstant.kPrimary,
+                            borderRadius: const BorderRadius.only(
+                              bottomLeft: Radius.circular(20.0),
+                              bottomRight: Radius.circular(20.0),
+                            )),
+                        width: maxWidth(context),
+                        height: 50.0,
+                      ),
+                      Expanded(
+                        child: Container(
+                          width: maxWidth(context),
                         ),
-                        Text(
-                            "Requested On:  ${DateFormat("EEEE, MMM d").format(requestedOn.toDate())}"),
-                        Text(
-                            "Patient Name: ${booking?['patient']['username']}"),
-                        Text(
-                            "Time: ${booking?['startTime']} ${booking?['endTime']}")
+                      ),
+                    ],
+                  ),
+                  Positioned(
+                    top: 25.0,
+                    bottom: 25.0,
+                    left: 20.0,
+                    right: 20.0,
+                    child: Column(
+                      children: [
+                        bookingMenu(context, lengthBloc),
                       ],
                     ),
-                  ],
-                ),
-              );
-            },
-          ));
-        },
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

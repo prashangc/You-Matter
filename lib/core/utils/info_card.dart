@@ -24,6 +24,7 @@ Widget infoCard({required context, required String text}) {
           Expanded(
             child: Text(
               text,
+              textAlign: TextAlign.center,
               style: kStyle12,
             ),
           ),

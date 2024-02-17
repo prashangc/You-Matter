@@ -9,7 +9,7 @@ class ColorConstant {
   static Color kWhite = Colors.white;
   static Color kTransparent = Colors.transparent;
   static Color kRed = Colors.red;
-  static Color kGrey = const Color(0xFFABB3CC);
+  static Color kGrey = const Color(0xFFE9ECF4);
   static Color kGreen = Colors.green;
   static Color kAmber = Colors.amber;
   static Color kOrange = Colors.orange;

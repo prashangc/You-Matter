@@ -6,14 +6,14 @@ import 'package:intl/intl.dart';
 import 'package:you_matter/core/theme/colors.dart';
 import 'package:you_matter/core/theme/textstyle.dart';
 import 'package:you_matter/core/utils/button.dart';
+import 'package:you_matter/core/utils/info_card.dart';
 import 'package:you_matter/core/utils/my_cached_network_image.dart';
 import 'package:you_matter/core/utils/my_custom_appbar.dart';
+import 'package:you_matter/core/utils/my_pop_up.dart';
 import 'package:you_matter/core/utils/my_rating_bar.dart';
 import 'package:you_matter/core/utils/sizes.dart';
+import 'package:you_matter/features/home/controller/therapist_controller.dart';
 import 'package:you_matter/features/home/presentation/widgets/therapist_timing.dart';
-
-import '../../../../services/firebase/firebase_query_handler.dart';
-import '../../controller/therapist_controller.dart';
 
 class TherapistDetailScreen extends StatefulWidget {
   final Map<String, dynamic>? data;
@@ -55,7 +55,62 @@ class _TherapistDetailScreenState extends State<TherapistDetailScreen> {
                       selectedTime = selected ?? {};
                     });
                   },
-                )
+                ),
+                sizedBox24(),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Text(
+                    'Booking Summary :',
+                    style: kStyle14B,
+                  ),
+                ),
+                sizedBox24(),
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 20.0),
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 20.0, horizontal: 20.0),
+                  decoration: BoxDecoration(
+                    color: ColorConstant.kWhite,
+                    boxShadow: [
+                      BoxShadow(
+                          color: ColorConstant.kGrey,
+                          offset: const Offset(3, 3))
+                    ],
+                    borderRadius: const BorderRadius.all(
+                      Radius.circular(30.0),
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      myCard(
+                        context: context,
+                        title: 'Start Time',
+                        value: startTime ?? 'N/A',
+                        icon: Icons.timer_outlined,
+                      ),
+                      myCard(
+                        context: context,
+                        title: 'End Time',
+                        value: endTime ?? 'N/A',
+                        icon: Icons.timer_outlined,
+                      ),
+                      myCard(
+                        context: context,
+                        title: 'Date',
+                        value:
+                            '${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}',
+                        icon: Icons.timer_outlined,
+                      ),
+                      myCard(
+                        context: context,
+                        title: 'Price',
+                        value: 'Free Consultation',
+                        icon: Icons.attach_money_outlined,
+                        showDivider: false,
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
@@ -71,78 +126,83 @@ class _TherapistDetailScreenState extends State<TherapistDetailScreen> {
             builder: (context, snapshot) {
               bool isBookedAlready = snapshot.data?.data() != null;
               return snapshot.connectionState == ConnectionState.waiting
-                  ? const CircularProgressIndicator()
+                  ? const SizedBox(
+                      width: 50.0,
+                      height: 50.0,
+                      child: CircularProgressIndicator())
                   : isBookedAlready
-                      ? Center(
-                          child: Text(
-                          "Already Booked",
-                          style: kStyle18B,
-                        ))
-                      : selectedTime.isEmpty
-                          ? const SizedBox.shrink()
-                          : myButton(
-                              context: context,
-                              width: maxWidth(context),
-                              height: 50.0,
-                              text: 'Book',
-                              myTap: () {
-                                showDialog(
+                      ? infoCard(
+                          context: context,
+                          text: 'Already Booked',
+                        )
+                      : myButton(
+                          context: context,
+                          width: maxWidth(context),
+                          height: 50.0,
+                          text: 'Book',
+                          myTap: () {
+                            if (selectedTime.isEmpty) {
+                              popUpHelper.popUp(
                                   context: context,
-                                  builder: (context) {
-                                    return StatefulBuilder(
-                                        builder: (context, setState) {
-                                      return AlertDialog(
-                                        title: const Text("Confirmation"),
-                                        content: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            Text(startTime ?? "Select Time"),
-                                            Text(endTime ?? "Select Date"),
-                                          ],
-                                        ),
-                                        actions: [
-                                          TextButton(
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                            child: const Text("Cancel"),
-                                          ),
-                                          TextButton(
-                                            onPressed: () async {
-                                              if (endTime != null &&
-                                                  startTime != null) {
-                                                therapistController
-                                                    .onTherapistBookingRequest(
-                                                        scheduleID: scheduleID,
-                                                        startTime: startTime,
-                                                        endTime: endTime,
-                                                        date: DateFormat(
-                                                                "EEEE, MMM d")
-                                                            .format(
-                                                                DateTime.now()),
-                                                        username: FirebaseAuth
-                                                            .instance
-                                                            .currentUser!
-                                                            .displayName!,
-                                                        uid: FirebaseAuth
-                                                            .instance
-                                                            .currentUser!
-                                                            .uid,
-                                                        therapistID: id);
-                                                Navigator.pop(context);
-                                              }
-                                            },
-                                            child: const Text("Request"),
-                                          ),
+                                  message: 'Please select a time first',
+                                  type: 'error');
+                            } else {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return StatefulBuilder(
+                                      builder: (context, setState) {
+                                    return AlertDialog(
+                                      title: const Text("Confirmation"),
+                                      content: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text(startTime ?? "Select Time"),
+                                          Text(endTime ?? "Select Date"),
                                         ],
-                                      );
-                                    });
-                                  },
-                                );
-                              },
-                            );
+                                      ),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text("Cancel"),
+                                        ),
+                                        TextButton(
+                                          onPressed: () async {
+                                            if (endTime != null &&
+                                                startTime != null) {
+                                              therapistController
+                                                  .onTherapistBookingRequest(
+                                                      scheduleID: scheduleID,
+                                                      startTime: startTime,
+                                                      endTime: endTime,
+                                                      date: DateFormat(
+                                                              "EEEE, MMM d")
+                                                          .format(
+                                                              DateTime.now()),
+                                                      username: FirebaseAuth
+                                                          .instance
+                                                          .currentUser!
+                                                          .displayName!,
+                                                      uid: FirebaseAuth.instance
+                                                          .currentUser!.uid,
+                                                      therapistID: id);
+                                              Navigator.pop(context);
+                                            }
+                                          },
+                                          child: const Text("Request"),
+                                        ),
+                                      ],
+                                    );
+                                  });
+                                },
+                              );
+                            }
+                          },
+                        );
             }),
       ),
     );
@@ -200,6 +260,55 @@ class _TherapistDetailScreenState extends State<TherapistDetailScreen> {
               ],
             ),
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget myCard({
+    required context,
+    required String title,
+    required String value,
+    required IconData icon,
+    bool? showDivider,
+  }) {
+    return SizedBox(
+      width: maxWidth(context),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Icon(
+                icon,
+                size: 14.0,
+                color: ColorConstant.kPrimary,
+              ),
+              sizedBox12(),
+              Expanded(
+                child: Row(
+                  children: [
+                    Text(
+                      '$title : ',
+                      style: kStyle14B,
+                    ),
+                    Text(
+                      value,
+                      style: kStyle14B.copyWith(
+                          color: value == 'N/A'
+                              ? Colors.red
+                              : ColorConstant.kBlue),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          showDivider != null ? Container() : sizedBox24(),
+          Container(
+            color: ColorConstant.kBlack.withOpacity(0.1),
+            height: showDivider != null ? 0.0 : 1.0,
+          ),
+          showDivider != null ? Container() : sizedBox24(),
         ],
       ),
     );
