@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
+import 'package:uuid/v4.dart';
 import 'package:you_matter/services/firebase/firebase_query_handler.dart';
 
 class AddTimeScreen extends StatefulWidget {
@@ -128,6 +130,7 @@ class _AddTimeScreenState extends State<AddTimeScreen> {
                                       filteredTime.isNotEmpty) {
                                     previous = filteredTime
                                         .map((e) => {
+                                              'scheduleID': e['scheduleID'],
                                               'startTime': e['startTime'],
                                               'endTime': e['endTime'],
                                               'createdOn': e['createdOn']
@@ -135,6 +138,7 @@ class _AddTimeScreenState extends State<AddTimeScreen> {
                                         .toList();
                                   }
                                   previous.add({
+                                    'scheduleID': const Uuid().v4(),
                                     'startTime': startTime,
                                     'endTime': endTime,
                                     'createdOn': DateFormat("EEEE, MMM d")

@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:you_matter/core/theme/colors.dart';
 import 'package:you_matter/core/utils/sizes.dart';
 import 'package:you_matter/features/profile/presentation/widget/menu.dart';

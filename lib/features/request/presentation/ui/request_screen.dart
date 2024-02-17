@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:you_matter/core/utils/sizes.dart';
 import 'package:you_matter/services/firebase/firebase_query_handler.dart';
 
@@ -17,7 +16,7 @@ class _RequestScreenState extends State<RequestScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Request"),
+        title: const Text("Today's Request"),
       ),
       body: StreamBuilder(
         stream: FirebaseQueryHelper.firebaseFireStore
@@ -72,11 +71,11 @@ class _RequestScreenState extends State<RequestScreen> {
                             ),
                           )
                         },
+                        // Text(
+                        //     "Requested On:  ${DateFormat("EEEE, MMM d").format(requestedOn.toDate())}"),
                         Text(
-                            "Requested On:  ${DateFormat("EEEE, MMM d").format(requestedOn.toDate())}"),
-                        Text("Patient Name: ${booking?['patient']}"),
-                        Text(
-                            "Date and time: ${booking?['date']} ${booking?['time']}")
+                            "Patient Name: ${booking?['patient']['username']}"),
+                        Text("Time: ${booking?['date']} - ${booking?['time']}")
                       ],
                     ),
                     if (!isRejected && !isAccepted) ...{

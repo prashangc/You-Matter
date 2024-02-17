@@ -14,11 +14,12 @@ class TherapistController {
   }
 
   Future<void> onTherapistBookingRequest(
-      {required String time,
-      required String date,
+      {required String startTime,
+      required String endTime,
       required String username,
       required String uid,
-      required String therapistID}) async {
+      required String therapistID,
+      String? scheduleID}) async {
     Map<String, dynamic> patientDetail = {};
     Map<String, dynamic> therapistDetail = {};
     await FirebaseQueryHelper.firebaseFireStore
@@ -40,10 +41,11 @@ class TherapistController {
       }
     });
     final data = {
+      'scheduleID': scheduleID,
       'patient': patientDetail,
       'therapist': therapistDetail,
-      'time': time,
-      'date': date,
+      'startTime': startTime,
+      'endTime': endTime,
       'patientId': uid,
       'therapistId': therapistID,
       'status': "pending",

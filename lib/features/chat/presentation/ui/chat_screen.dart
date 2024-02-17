@@ -70,13 +70,7 @@ class _ChatScreenState extends State<ChatScreen> {
               return const Center(
                 child: CircularProgressIndicator(),
               );
-            }
-            // else if (bookings == null || bookings.isEmpty) {
-            //   return const Center(
-            //     child: Text("No Chats available today!!"),
-            //   );
-            // }
-            else {
+            } else {
               int? indexOfLatestBooking;
               Map<String, dynamic>? latestBooking;
               if (bookings == null || bookings.isEmpty) {
