@@ -35,7 +35,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             myAppBar(context),
-            Flexible(
+            Expanded(
+              flex: 1,
               child: Stack(
                 children: [
                   Column(
