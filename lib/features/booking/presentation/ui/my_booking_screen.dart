@@ -82,9 +82,10 @@ class _MyBookingsState extends State<MyBookings> {
                         ),
                         Text(
                             "Requested On:  ${DateFormat("EEEE, MMM d").format(requestedOn.toDate())}"),
-                        Text("Patient Name: ${booking?['patient']}"),
                         Text(
-                            "Date and time: ${booking?['startTime']} ${booking?['endTime']}")
+                            "Patient Name: ${booking?['patient']['username']}"),
+                        Text(
+                            "Time: ${booking?['startTime']} ${booking?['endTime']}")
                       ],
                     ),
                   ],

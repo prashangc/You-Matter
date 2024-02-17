@@ -69,6 +69,7 @@ class _TherapistTimingState extends State<TherapistTiming> {
                                 String? startTime = time['startTime'];
                                 String? endTime = time['endTime'];
                                 String? scheduleID = time['scheduleID'];
+                                bool isBooked = time['isBooked'] ?? false;
                                 return StreamBuilder(
                                     stream: therapistController.getAllBookings(
                                         uid: FirebaseAuth
@@ -77,29 +78,34 @@ class _TherapistTimingState extends State<TherapistTiming> {
                                     builder: (context, bookingsnapshot) {
                                       bool isBookedAlready =
                                           bookingsnapshot.data?.data() != null;
+
                                       return bookingsnapshot.connectionState ==
                                               ConnectionState.waiting
                                           ? const CircularProgressIndicator()
                                           : ListTile(
                                               leading: isBookedAlready
                                                   ? null
-                                                  : Checkbox(
-                                                      value: selectedTime[
-                                                              'scheduleID'] ==
-                                                          scheduleID,
-                                                      onChanged: (value) {
-                                                        widget.onSelect(
-                                                            selectedTime =
-                                                                value == true
-                                                                    ? time
-                                                                    : {});
-                                                        setState(() {
-                                                          selectedTime =
-                                                              value == true
-                                                                  ? time
-                                                                  : {};
-                                                        });
-                                                      }),
+                                                  : isBooked
+                                                      ? const Text(
+                                                          "Not Available")
+                                                      : Checkbox(
+                                                          value: selectedTime[
+                                                                  'scheduleID'] ==
+                                                              scheduleID,
+                                                          onChanged: (value) {
+                                                            widget.onSelect(
+                                                                selectedTime =
+                                                                    value ==
+                                                                            true
+                                                                        ? time
+                                                                        : {});
+                                                            setState(() {
+                                                              selectedTime =
+                                                                  value == true
+                                                                      ? time
+                                                                      : {};
+                                                            });
+                                                          }),
                                               title: Text(
                                                 "${time['startTime']}-${time['endTime']}",
                                               ),

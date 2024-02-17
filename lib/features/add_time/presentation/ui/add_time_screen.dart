@@ -130,6 +130,7 @@ class _AddTimeScreenState extends State<AddTimeScreen> {
                                       filteredTime.isNotEmpty) {
                                     previous = filteredTime
                                         .map((e) => {
+                                              'isBooked': e['isBooked'],
                                               'scheduleID': e['scheduleID'],
                                               'startTime': e['startTime'],
                                               'endTime': e['endTime'],
@@ -138,6 +139,7 @@ class _AddTimeScreenState extends State<AddTimeScreen> {
                                         .toList();
                                   }
                                   previous.add({
+                                    'isBooked': false,
                                     'scheduleID': const Uuid().v4(),
                                     'startTime': startTime,
                                     'endTime': endTime,
