@@ -28,7 +28,8 @@ class RegisterController {
             .createUserWithEmailAndPassword(
                 email: model.email!, password: model.password!)
             .then((value) async {
-          await createUserInFireStore(value.user, model.name, isTherapist);
+          await createUserInFireStore(
+              value.user, model.name, isTherapist, model.therapistCategory);
           await firebaseAuth.currentUser?.updateDisplayName(model.name);
         });
         bloc.add(SuccessEvent(
@@ -53,8 +54,8 @@ class RegisterController {
     }
   }
 
-  Future<void> createUserInFireStore(
-      User? user, String? username, bool isTherapist) async {
+  Future<void> createUserInFireStore(User? user, String? username,
+      bool isTherapist, String? therapistCategory) async {
     if (user != null && username != null) {
       await FirebaseQueryHelper.firebaseFireStore
           .collection('users')
@@ -63,6 +64,7 @@ class RegisterController {
         'username': username,
         'email': user.email,
         'isTherapist': isTherapist,
+        'therapistCategory': therapistCategory,
         "uid": user.uid,
         'photoUrl': "",
         'createdOn': DateTime.now(),
