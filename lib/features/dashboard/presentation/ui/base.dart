@@ -21,12 +21,14 @@ class BasePage extends StatelessWidget {
               currentIndex: 0,
               paddingBackgroundColor: ColorConstant.backgroundColor,
               items: [
-                SweetNavBarItem(
-                  sweetBackground: ColorConstant.backgroundColor,
-                  iconColors: [ColorConstant.kBlack, ColorConstant.kGrey],
-                  sweetIcon: const Icon(Icons.home_outlined),
-                  sweetLabel: 'Home $isTherapist',
-                ),
+                if (!isTherapist) ...{
+                  SweetNavBarItem(
+                    sweetBackground: ColorConstant.backgroundColor,
+                    iconColors: [ColorConstant.kBlack, ColorConstant.kGrey],
+                    sweetIcon: const Icon(Icons.home_outlined),
+                    sweetLabel: 'Home',
+                  )
+                },
                 SweetNavBarItem(
                     sweetBackground: ColorConstant.backgroundColor,
                     iconColors: [ColorConstant.kBlack, ColorConstant.kGrey],

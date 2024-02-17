@@ -27,7 +27,7 @@ class _SplashScreenState extends State<SplashScreen> {
         pushTo(
             context: context,
             screen: BasePage(
-              currentIndex: 2,
+              currentIndex: 0,
               isTherapist: isTherapist ?? false,
             ));
       } else {

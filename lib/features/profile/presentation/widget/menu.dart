@@ -5,6 +5,7 @@ import 'package:you_matter/core/theme/textstyle.dart';
 import 'package:you_matter/core/utils/sizes.dart';
 import 'package:you_matter/features/add_time/presentation/ui/add_time_screen.dart';
 import 'package:you_matter/features/booking/presentation/ui/my_booking_screen.dart';
+import 'package:you_matter/features/request/presentation/ui/request_screen.dart';
 
 Widget menu(context, Map<String, dynamic>? data) {
   return Expanded(
@@ -32,7 +33,11 @@ Widget menu(context, Map<String, dynamic>? data) {
                 subtitle: 'View your appointment history',
                 icon: Icons.health_and_safety_outlined,
                 myTap: () {
-                  pushTo(context: context, screen: const MyBookings());
+                  pushTo(
+                      context: context,
+                      screen: data?['isTherapist'] == true
+                          ? const RequestScreen()
+                          : const MyBookings());
                 },
               ),
               myCard(

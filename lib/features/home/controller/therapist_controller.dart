@@ -19,7 +19,8 @@ class TherapistController {
       required String username,
       required String uid,
       required String therapistID,
-      String? scheduleID}) async {
+      String? scheduleID,
+      required String date}) async {
     Map<String, dynamic> patientDetail = {};
     Map<String, dynamic> therapistDetail = {};
     await FirebaseQueryHelper.firebaseFireStore
@@ -46,6 +47,7 @@ class TherapistController {
       'therapist': therapistDetail,
       'startTime': startTime,
       'endTime': endTime,
+      'date': date,
       'patientId': uid,
       'therapistId': therapistID,
       'status': "pending",

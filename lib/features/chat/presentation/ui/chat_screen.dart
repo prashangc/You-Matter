@@ -62,9 +62,9 @@ class _ChatScreenState extends State<ChatScreen> {
                   ? (element.id.split(":").first == myID)
                   : (element.id.split(":").last == myID));
 
-              bool isToday = element.data()['date'] ==
-                  DateFormat("EEEE, MMM d").format(DateTime.now());
-              return containsMyID && isToday;
+              // bool isToday = element.data()['date'] ==
+              //     DateFormat("EEEE, MMM d").format(DateTime.now());
+              return containsMyID && true;
             }).toList();
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
@@ -76,11 +76,13 @@ class _ChatScreenState extends State<ChatScreen> {
               if (bookings == null || bookings.isEmpty) {
               } else {
                 indexOfLatestBooking = findClosestTimeIndex(
-                    bookings.map((e) => "${e.data()['time']}").toList() ?? []);
+                    bookings.map((e) => "${e.data()['startTime']}").toList() ??
+                        []);
                 latestBooking =
                     bookings.elementAtOrNull(indexOfLatestBooking)?.data();
               }
 
+              // return Text("${latestBooking?.length}");
               return SizedBox(
                   width: maxWidth(context),
                   height: maxHeight(context),

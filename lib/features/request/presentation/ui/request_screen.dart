@@ -29,86 +29,92 @@ class _RequestScreenState extends State<RequestScreen> {
                   FirebaseAuth.instance.currentUser!.uid)
               .toList();
 
-          return Expanded(
-              child: ListView.separated(
-            separatorBuilder: (context, index) {
-              return sizedBox12();
-            },
-            itemCount: bookings?.length ?? 0,
-            itemBuilder: (context, index) {
-              final booking = bookings?[index].data();
-              final requestedOn = booking?['requestedOn'] as Timestamp;
-              final patientID = booking?['patientId'] as String;
-              final status = booking?['status'] as String;
-              bool isRejected = status == "rejected";
-              bool isAccepted = status == "accepted";
-              bool isPending = status == "pending";
-              return Container(
-                padding: const EdgeInsets.all(10),
-                margin: const EdgeInsets.symmetric(horizontal: 10),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                      color: Colors.black,
-                    )),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if (!isPending) ...{
-                          Text(
-                            status,
-                            style: TextStyle(
-                              color: isRejected
-                                  ? Colors.red
-                                  : isAccepted
-                                      ? Colors.green
-                                      : null,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          )
-                        },
-                        // Text(
-                        //     "Requested On:  ${DateFormat("EEEE, MMM d").format(requestedOn.toDate())}"),
-                        Text(
-                            "Patient Name: ${booking?['patient']['username']}"),
-                        Text("Time: ${booking?['date']} - ${booking?['time']}")
-                      ],
-                    ),
-                    if (!isRejected && !isAccepted) ...{
-                      Row(
+          return bookings != null && bookings.isNotEmpty
+              ? ListView.separated(
+                  shrinkWrap: true,
+                  separatorBuilder: (context, index) {
+                    return sizedBox12();
+                  },
+                  itemCount: bookings.length ?? 0,
+                  itemBuilder: (context, index) {
+                    final booking = bookings[index].data();
+                    final requestedOn = booking['requestedOn'] as Timestamp;
+                    final patientID = booking['patientId'] as String;
+                    final status = booking['status'] as String;
+                    bool isRejected = status == "rejected";
+                    bool isAccepted = status == "accepted";
+                    bool isPending = status == "pending";
+                    // return Center(child: Text("AJHSDGahgjasg${bookings?.length}"));
+                    return Container(
+                      padding: const EdgeInsets.all(10),
+                      margin: const EdgeInsets.symmetric(horizontal: 10),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(
+                            color: Colors.black,
+                          )),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          TextButton(
-                            onPressed: () async {
-                              await FirebaseQueryHelper.firebaseFireStore
-                                  .collection('bookings')
-                                  .doc(
-                                      "${FirebaseAuth.instance.currentUser!.uid}:$patientID")
-                                  .update({'status': "rejected"});
-                            },
-                            child: const Text("Reject"),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              if (!isPending) ...{
+                                Text(
+                                  status,
+                                  style: TextStyle(
+                                    color: isRejected
+                                        ? Colors.red
+                                        : isAccepted
+                                            ? Colors.green
+                                            : null,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                )
+                              },
+                              // Text(
+                              //     "Requested On:  ${DateFormat("EEEE, MMM d").format(requestedOn.toDate())}"),
+                              Text(
+                                  "Patient Name: ${booking['patient']['username']}"),
+                              Text(
+                                  "Time: ${booking['startTime']} - ${booking['endTime']}")
+                            ],
                           ),
-                          TextButton(
-                            onPressed: () async {
-                              await FirebaseQueryHelper.firebaseFireStore
-                                  .collection('bookings')
-                                  .doc(
-                                      "${FirebaseAuth.instance.currentUser!.uid}:$patientID")
-                                  .update({'status': "accepted"});
-                            },
-                            child: const Text("Accept"),
-                          )
+                          if (!isRejected && !isAccepted) ...{
+                            Row(
+                              children: [
+                                TextButton(
+                                  onPressed: () async {
+                                    await FirebaseQueryHelper.firebaseFireStore
+                                        .collection('bookings')
+                                        .doc(
+                                            "${FirebaseAuth.instance.currentUser!.uid}:$patientID")
+                                        .update({'status': "rejected"});
+                                  },
+                                  child: const Text("Reject"),
+                                ),
+                                TextButton(
+                                  onPressed: () async {
+                                    await FirebaseQueryHelper.firebaseFireStore
+                                        .collection('bookings')
+                                        .doc(
+                                            "${FirebaseAuth.instance.currentUser!.uid}:$patientID")
+                                        .update({'status': "accepted"});
+                                  },
+                                  child: const Text("Accept"),
+                                )
+                              ],
+                            )
+                          }
                         ],
-                      )
-                    }
-                  ],
-                ),
-              );
-            },
-          ));
+                      ),
+                    );
+                  },
+                )
+              : const Center(
+                  child: Text("No Request Today"),
+                );
         },
       ),
     );
