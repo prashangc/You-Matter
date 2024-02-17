@@ -1,18 +1,12 @@
-import 'dart:math';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:you_matter/core/theme/colors.dart';
 import 'package:you_matter/core/theme/textstyle.dart';
-import 'package:you_matter/core/utils/button.dart';
-import 'package:you_matter/core/utils/my_cached_network_image.dart';
-import 'package:you_matter/core/utils/my_custom_appbar.dart';
-import 'package:you_matter/core/utils/my_rating_bar.dart';
 import 'package:you_matter/core/utils/sizes.dart';
+import 'package:you_matter/features/home/controller/therapist_controller.dart';
 
 import '../../../../services/firebase/firebase_query_handler.dart';
-import '../../controller/therapist_controller.dart';
 
 class TherapistTiming extends StatefulWidget {
   final Map<String, dynamic>? data;
@@ -60,53 +54,144 @@ class _TherapistTimingState extends State<TherapistTiming> {
                           child: CircularProgressIndicator(),
                         )
                       : filteredTime != null && filteredTime.isNotEmpty
-                          ? ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: filteredTime.length,
-                              itemBuilder: (context, index) {
-                                final time =
-                                    filteredTime[index] as Map<String, dynamic>;
-                                String? startTime = time['startTime'];
-                                String? endTime = time['endTime'];
-                                String? scheduleID = time['scheduleID'];
-                                return StreamBuilder(
-                                    stream: therapistController.getAllBookings(
-                                        uid: FirebaseAuth
-                                            .instance.currentUser!.uid,
-                                        therapistID: id!),
-                                    builder: (context, bookingsnapshot) {
-                                      bool isBookedAlready =
-                                          bookingsnapshot.data?.data() != null;
-                                      return bookingsnapshot.connectionState ==
-                                              ConnectionState.waiting
-                                          ? const CircularProgressIndicator()
-                                          : ListTile(
-                                              leading: isBookedAlready
-                                                  ? null
-                                                  : Checkbox(
-                                                      value: selectedTime[
-                                                              'scheduleID'] ==
-                                                          scheduleID,
-                                                      onChanged: (value) {
-                                                        widget.onSelect(
-                                                            selectedTime =
-                                                                value == true
-                                                                    ? time
-                                                                    : {});
-                                                        setState(() {
-                                                          selectedTime =
-                                                              value == true
-                                                                  ? time
-                                                                  : {};
-                                                        });
-                                                      }),
-                                              title: Text(
-                                                "${time['startTime']}-${time['endTime']}",
-                                              ),
-                                            );
-                                    });
-                              },
+                          ? Wrap(
+                              direction: Axis.horizontal,
+                              alignment: WrapAlignment.start,
+                              spacing: 10.0,
+                              runSpacing: 10.0,
+                              children: List.generate(
+                                filteredTime.length,
+                                (index) {
+                                  final time = filteredTime[index]
+                                      as Map<String, dynamic>;
+                                  String? startTime = time['startTime'];
+                                  String? endTime = time['endTime'];
+                                  String? scheduleID = time['scheduleID'];
+                                  return Container(
+                                    width: maxWidth(context) / 2,
+                                    decoration: BoxDecoration(
+                                      color: ColorConstant.kWhite,
+                                      boxShadow: [
+                                        BoxShadow(
+                                            color: ColorConstant.kGrey,
+                                            offset: const Offset(3, 3))
+                                      ],
+                                      borderRadius: const BorderRadius.all(
+                                        Radius.circular(30.0),
+                                      ),
+                                    ),
+                                    child: StreamBuilder(
+                                        stream:
+                                            therapistController.getAllBookings(
+                                                uid: FirebaseAuth
+                                                    .instance.currentUser!.uid,
+                                                therapistID: id!),
+                                        builder: (context, bookingsnapshot) {
+                                          bool isBookedAlready =
+                                              bookingsnapshot.data?.data() !=
+                                                  null;
+                                          return bookingsnapshot
+                                                      .connectionState ==
+                                                  ConnectionState.waiting
+                                              ? const CircularProgressIndicator()
+                                              : Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      vertical: 12.0),
+                                                  child: Row(
+                                                    children: [
+                                                      Text(
+                                                          "${time['startTime']}-${time['endTime']}"),
+                                                      isBookedAlready
+                                                          ? Container()
+                                                          : Container(
+                                                              color: Colors.red,
+                                                              child: Checkbox(
+                                                                  visualDensity:
+                                                                      const VisualDensity(
+                                                                          horizontal:
+                                                                              -4),
+                                                                  value: selectedTime[
+                                                                          'scheduleID'] ==
+                                                                      scheduleID,
+                                                                  onChanged:
+                                                                      (value) {
+                                                                    widget.onSelect(selectedTime =
+                                                                        value ==
+                                                                                true
+                                                                            ? time
+                                                                            : {});
+                                                                    setState(
+                                                                        () {
+                                                                      selectedTime = value ==
+                                                                              true
+                                                                          ? time
+                                                                          : {};
+                                                                    });
+                                                                  }),
+                                                            ),
+                                                    ],
+                                                  ),
+                                                );
+                                        }),
+                                  );
+                                },
+                              ),
                             )
+                          // SizedBox(
+                          //     child: ListView.builder(
+                          //       shrinkWrap: true,
+                          //       // scrollDirection: Axis.horizontal,
+                          //       itemCount: filteredTime.length,
+                          //       itemBuilder: (context, index) {
+                          //         final time = filteredTime[index]
+                          //             as Map<String, dynamic>;
+                          //         String? startTime = time['startTime'];
+                          //         String? endTime = time['endTime'];
+                          //         String? scheduleID = time['scheduleID'];
+                          //         return StreamBuilder(
+                          //             stream:
+                          //                 therapistController.getAllBookings(
+                          //                     uid: FirebaseAuth
+                          //                         .instance.currentUser!.uid,
+                          //                     therapistID: id!),
+                          //             builder: (context, bookingsnapshot) {
+                          //               bool isBookedAlready =
+                          //                   bookingsnapshot.data?.data() !=
+                          //                       null;
+                          //               return bookingsnapshot
+                          //                           .connectionState ==
+                          //                       ConnectionState.waiting
+                          //                   ? const CircularProgressIndicator()
+                          //                   : ListTile(
+                          //                       leading: isBookedAlready
+                          //                           ? null
+                          //                           : Checkbox(
+                          //                               value: selectedTime[
+                          //                                       'scheduleID'] ==
+                          //                                   scheduleID,
+                          //                               onChanged: (value) {
+                          //                                 widget.onSelect(
+                          //                                     selectedTime =
+                          //                                         value == true
+                          //                                             ? time
+                          //                                             : {});
+                          //                                 setState(() {
+                          //                                   selectedTime =
+                          //                                       value == true
+                          //                                           ? time
+                          //                                           : {};
+                          //                                 });
+                          //                               }),
+                          //                       title: Text(
+                          //                         "${time['startTime']}-${time['endTime']}",
+                          //                       ),
+                          //                     );
+                          //             });
+                          //       },
+                          //     ),
+                          //   )
+
                           : const Center(
                               child: Text("No Times"),
                             ),

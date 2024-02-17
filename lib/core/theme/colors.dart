@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 class ColorConstant {
   ColorConstant._();
 
-  static Color backgroundColor = const Color(0xFFE9ECF4);
+  // static Color backgroundColor = const Color(0xFFE9ECF4);
+  static Color backgroundColor = const Color(0xFFFAF1EA);
+  static Color kBackgroundColor = const Color(0xFFFAF1EA);
   static Color kWhite = Colors.white;
   static Color kTransparent = Colors.transparent;
   static Color kRed = Colors.red;
