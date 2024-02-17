@@ -73,6 +73,7 @@ class _TherapistTimingState extends State<TherapistTiming> {
                                   String? startTime = time['startTime'];
                                   String? endTime = time['endTime'];
                                   String? scheduleID = time['scheduleID'];
+                                  bool isBooked = time['isBooked'] ?? false;
                                   return Container(
                                     width: maxWidth(context) / 2,
                                     decoration: BoxDecoration(
