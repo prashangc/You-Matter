@@ -22,8 +22,8 @@ class _AddTimeScreenState extends State<AddTimeScreen> {
             .doc(FirebaseAuth.instance.currentUser?.uid)
             .snapshots(),
         builder: (context, snapshot) {
-          final times = snapshot.data?.data()?['times'] as List<dynamic>;
-          final filteredTime = times.where((element) {
+          final times = snapshot.data?.data()?['times'] as List<dynamic>?;
+          final filteredTime = times?.where((element) {
             final item = element as Map<String, dynamic>;
             bool isToday = item['createdOn'] ==
                 DateFormat("EEEE, MMM d").format(DateTime.now());
@@ -37,7 +37,7 @@ class _AddTimeScreenState extends State<AddTimeScreen> {
                 ? const Center(
                     child: CircularProgressIndicator(),
                   )
-                : filteredTime.isNotEmpty
+                : filteredTime != null && filteredTime.isNotEmpty
                     ? ListView.builder(
                         itemCount: filteredTime.length,
                         itemBuilder: (context, index) {
@@ -50,8 +50,8 @@ class _AddTimeScreenState extends State<AddTimeScreen> {
                             trailing: IconButton(
                               onPressed: () {
                                 List<dynamic> previous = [];
-                                if (times.isNotEmpty) {
-                                  previous = times
+                                if (filteredTime.isNotEmpty) {
+                                  previous = filteredTime
                                       .map((e) => {
                                             'startTime': e['startTime'],
                                             'endTime': e['endTime'],
@@ -124,8 +124,9 @@ class _AddTimeScreenState extends State<AddTimeScreen> {
                               onPressed: () async {
                                 if (startTime != null && endTime != null) {
                                   List<dynamic> previous = [];
-                                  if (times.isNotEmpty) {
-                                    previous = times
+                                  if (filteredTime != null &&
+                                      filteredTime.isNotEmpty) {
+                                    previous = filteredTime
                                         .map((e) => {
                                               'startTime': e['startTime'],
                                               'endTime': e['endTime'],
