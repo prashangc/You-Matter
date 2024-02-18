@@ -9,7 +9,7 @@ import 'package:you_matter/core/utils/time_utils.dart';
 import 'package:you_matter/features/chat/presentation/widget/chat_app_bar.dart';
 import 'package:you_matter/features/chat/presentation/widget/chat_page.dart';
 import 'package:you_matter/features/chat/presentation/widget/therapist_details.dart';
-
+import 'package:collection/collection.dart';
 import '../../../../services/firebase/firebase_query_handler.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -23,23 +23,7 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  final TextEditingController _textEditingController = TextEditingController();
-
-  void _sendMessage() {
-    String messageText = _textEditingController.text.trim();
-    if (messageText.isNotEmpty) {
-      FirebaseFirestore.instance
-          .collection('chats')
-          .doc(widget.chatId)
-          .collection('messages')
-          .add({
-        'text': messageText,
-        'createdAt': Timestamp.now(),
-        // Add other fields like senderId, senderName, etc. if needed
-      });
-      _textEditingController.clear();
-    }
-  }
+  final TextEditingController textEditingController = TextEditingController();
 
   String? myID = FirebaseAuth.instance.currentUser!.uid;
   @override
@@ -54,7 +38,7 @@ class _ChatScreenState extends State<ChatScreen> {
       backgroundColor: ColorConstant.backgroundColor,
       body: StreamBuilder(
           stream: FirebaseQueryHelper.firebaseFireStore
-              .collection('bookings')
+              .collection('chats')
               .snapshots(),
           builder: (context, snapshot) {
             final bookings = snapshot.data?.docs.where((element) {
@@ -62,9 +46,9 @@ class _ChatScreenState extends State<ChatScreen> {
                   ? (element.id.split(":").first == myID)
                   : (element.id.split(":").last == myID));
 
-              // bool isToday = element.data()['date'] ==
-              //     DateFormat("EEEE, MMM d").format(DateTime.now());
-              return containsMyID && true;
+              bool isToday = element.data()['date'] ==
+                  DateFormat("EEEE, MMM d").format(DateTime.now());
+              return containsMyID && isToday;
             }).toList();
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
@@ -73,16 +57,20 @@ class _ChatScreenState extends State<ChatScreen> {
             } else {
               int? indexOfLatestBooking;
               Map<String, dynamic>? latestBooking;
+              Map<String, dynamic>? chatWith;
+
               if (bookings == null || bookings.isEmpty) {
               } else {
                 indexOfLatestBooking = findClosestTimeIndex(
-                    bookings.map((e) => "${e.data()['startTime']}").toList() ??
-                        []);
+                    bookings.map((e) => "${e.data()['startTime']}").toList());
                 latestBooking =
                     bookings.elementAtOrNull(indexOfLatestBooking)?.data();
+                final participants =
+                    latestBooking?['participants'] as List<dynamic>;
+                chatWith = participants
+                        .firstWhereOrNull((element) => element['uid'] != myID)
+                    as Map<String, dynamic>?;
               }
-
-              // return Text("${latestBooking?.length}");
               return SizedBox(
                   width: maxWidth(context),
                   height: maxHeight(context),
@@ -124,15 +112,13 @@ class _ChatScreenState extends State<ChatScreen> {
                                           context: context,
                                           text:
                                               'Please book a therapist to consult via chat messages.')
-                                      : therapistDetails(
-                                          context,
-                                          name:
-                                              "${widget.isTherapist ? latestBooking['patient']['username'] : latestBooking['therapist']['username']}",
-                                          email:
-                                              "${widget.isTherapist ? latestBooking['patient']['email'] : latestBooking['therapist']['email']}",
-                                        ),
+                                      : therapistDetails(context,
+                                          name: "${chatWith?['username']}",
+                                          email: "${chatWith?['email']}",
+                                          booking: latestBooking),
                                   sizedBox16(),
-                                  chatPage(context),
+                                  chatPage(context, latestBooking,
+                                      textEditingController),
                                 ],
                               ),
                             )

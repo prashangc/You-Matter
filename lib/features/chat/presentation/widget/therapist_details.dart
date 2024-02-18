@@ -3,12 +3,20 @@ import 'package:you_matter/core/theme/colors.dart';
 import 'package:you_matter/core/theme/textstyle.dart';
 import 'package:you_matter/core/utils/sizes.dart';
 
+import '../../../../core/utils/time_utils.dart';
+
 Widget therapistDetails(
   context, {
   String? name,
   String? email,
   String? imageUrl,
+  required Map<String, dynamic> booking,
 }) {
+  String? startTime = booking['startTime'];
+  String? endTime = booking['endTime'];
+  bool isBetween = isTimeInRange(startTime, endTime);
+  bool isBefore = isBeforeStartTime(startTime);
+  bool isAfter = isAfterEndTime(endTime);
   return Container(
     padding: const EdgeInsets.all(12.0),
     decoration: BoxDecoration(
@@ -38,6 +46,10 @@ Widget therapistDetails(
               ),
               Text(
                 email ?? "N/A",
+                style: kStyle12,
+              ),
+              Text(
+                "Status: ${isBefore ? "Not Started yet" : isBetween ? "Ongoing" : isAfter ? "End" : "--"}",
                 style: kStyle12,
               ),
             ],

@@ -24,3 +24,35 @@ int findClosestTimeIndex(List<String> times) {
           : element);
   return times.indexOf(time);
 }
+
+bool isTimeInRange(String? startTime, String? endTime) {
+  DateTime currentTime = DateTime.now();
+  if (startTime != null && endTime != null) {
+    if (currentTime.isAfter(parseTimeString(startTime)) &&
+        currentTime.isBefore(parseTimeString(endTime))) {
+      return true;
+    } else {
+      return false;
+    }
+  } else {
+    return false;
+  }
+}
+
+bool isBeforeStartTime(String? startTime) {
+  if (startTime != null) {
+    DateTime currentTime = DateTime.now();
+    return currentTime.isBefore(parseTimeString(startTime));
+  } else {
+    return false;
+  }
+}
+
+bool isAfterEndTime(String? endTime) {
+  if (endTime != null) {
+    DateTime currentTime = DateTime.now();
+    return currentTime.isAfter(parseTimeString(endTime));
+  } else {
+    return false;
+  }
+}

@@ -1,4 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:intl/intl.dart';
+import 'package:uuid/uuid.dart';
 import 'package:you_matter/services/firebase/firebase_query_handler.dart';
 
 class RequestController {
@@ -42,6 +44,53 @@ class RequestController {
         }
       }
     });
+  }
+
+  Future<void> createChat(
+      {required String patientID,
+      required String startTime,
+      required String endTime,
+      required List<Map<String, dynamic>?> participants,
+      String? scheduleID}) async {
+    await FirebaseQueryHelper.firebaseFireStore
+        .collection('chats')
+        .doc("${FirebaseAuth.instance.currentUser!.uid}:$patientID")
+        .set({
+      'startTime': startTime,
+      'endTime': endTime,
+      'id': const Uuid().v4(),
+      'scheduleID': scheduleID,
+      'date': DateFormat("EEEE, MMM d").format(DateTime.now()),
+      'participants': participants,
+    });
+  }
+
+  Future<void> sendMessage({
+    required String chatID,
+    required String senderID,
+    required String content,
+  }) async {
+    List<dynamic> allMessages = [];
+    await FirebaseQueryHelper.firebaseFireStore
+        .collection('chatMessages')
+        .doc(chatID)
+        .get()
+        .then((value) {
+      if (value.exists) {
+        final messages = value.data();
+        allMessages = messages?['messages'] as List<dynamic>;
+      } else {}
+    });
+    allMessages.add({
+      'id': const Uuid().v4(),
+      'createdAt': DateFormat("EEEE, MMM d").format(DateTime.now()),
+      'senderID': senderID,
+      'content': content,
+    });
+    await FirebaseQueryHelper.firebaseFireStore
+        .collection('chatMessages')
+        .doc(chatID)
+        .set({'messages': allMessages});
   }
 }
 

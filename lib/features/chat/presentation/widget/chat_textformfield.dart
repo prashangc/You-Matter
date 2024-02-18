@@ -1,9 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:you_matter/core/theme/colors.dart';
 import 'package:you_matter/core/theme/textstyle.dart';
+import 'package:you_matter/features/request/controller/request_controller.dart';
 
-Widget chatTextForm(context) {
+Widget chatTextForm(context, Map<String, dynamic>? chatWith,
+    TextEditingController textEditingController) {
   return TextFormField(
+    controller: textEditingController,
     focusNode: FocusNode(),
     cursorColor: ColorConstant.kPrimary,
     style: kStyle12,
@@ -20,10 +24,22 @@ Widget chatTextForm(context) {
               ),
             ),
             child: true == true
-                ? Icon(
-                    Icons.arrow_upward_rounded,
-                    size: 24,
-                    color: ColorConstant.kWhite,
+                ? InkWell(
+                    onTap: () {
+                      FocusScope.of(context).unfocus();
+                      requestController.sendMessage(
+                          chatID: chatWith?['id'],
+                          senderID:
+                              FirebaseAuth.instance.currentUser?.uid ?? "-",
+                          content: textEditingController.text);
+
+                      textEditingController.clear();
+                    },
+                    child: Icon(
+                      Icons.arrow_upward_rounded,
+                      size: 24,
+                      color: ColorConstant.kWhite,
+                    ),
                   )
                 : Container(
                     margin: const EdgeInsets.all(15.0),
