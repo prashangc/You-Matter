@@ -60,9 +60,7 @@ Widget chatPage(context, Map<String, dynamic>? chatWith,
               ),
             ),
           ),
-          if (isBetween) ...{
-            chatTextForm(context, chatWith, textEditingController)
-          },
+          if (isBetween) ...{ChatTextForm(chatWith: chatWith)},
         ],
       ),
     ),

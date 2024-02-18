@@ -24,8 +24,14 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController textEditingController = TextEditingController();
-
   String? myID = FirebaseAuth.instance.currentUser!.uid;
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  void remove(String chatID) async {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,6 +77,10 @@ class _ChatScreenState extends State<ChatScreen> {
                         .firstWhereOrNull((element) => element['uid'] != myID)
                     as Map<String, dynamic>?;
               }
+              String? endTime = latestBooking?['endTime'];
+              bool appointMentEnds = endTime != null
+                  ? DateTime.now().isAfter(parseTimeString(endTime))
+                  : true;
               return SizedBox(
                   width: maxWidth(context),
                   height: maxHeight(context),
@@ -100,28 +110,34 @@ class _ChatScreenState extends State<ChatScreen> {
                                 ),
                               ],
                             ),
-                            Positioned(
-                              top: 25.0,
-                              bottom: 25.0,
-                              left: 20.0,
-                              right: 20.0,
-                              child: Column(
-                                children: [
-                                  latestBooking == null
-                                      ? infoCard(
-                                          context: context,
-                                          text:
-                                              'Please book a therapist to consult via chat messages.')
-                                      : therapistDetails(context,
-                                          name: "${chatWith?['username']}",
-                                          email: "${chatWith?['email']}",
-                                          booking: latestBooking),
-                                  sizedBox16(),
-                                  chatPage(context, latestBooking,
-                                      textEditingController),
-                                ],
-                              ),
-                            )
+                            appointMentEnds
+                                ? const Center(
+                                    child:
+                                        Text("No appointments at the moment!!"),
+                                  )
+                                : Positioned(
+                                    top: 25.0,
+                                    bottom: 25.0,
+                                    left: 20.0,
+                                    right: 20.0,
+                                    child: Column(
+                                      children: [
+                                        latestBooking == null
+                                            ? infoCard(
+                                                context: context,
+                                                text:
+                                                    'Please book a therapist to consult via chat messages.')
+                                            : therapistDetails(context,
+                                                name:
+                                                    "${chatWith?['username']}",
+                                                email: "${chatWith?['email']}",
+                                                booking: latestBooking),
+                                        sizedBox16(),
+                                        chatPage(context, latestBooking,
+                                            textEditingController),
+                                      ],
+                                    ),
+                                  )
                           ],
                         ),
                       ),

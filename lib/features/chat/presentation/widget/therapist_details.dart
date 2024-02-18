@@ -1,9 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:you_matter/core/theme/colors.dart';
 import 'package:you_matter/core/theme/textstyle.dart';
 import 'package:you_matter/core/utils/sizes.dart';
 
 import '../../../../core/utils/time_utils.dart';
+import '../../../../services/firebase/firebase_query_handler.dart';
 
 Widget therapistDetails(
   context, {
@@ -49,9 +51,30 @@ Widget therapistDetails(
                 style: kStyle12,
               ),
               Text(
-                "Status: ${isBefore ? "Not Started yet" : isBetween ? "Ongoing" : isAfter ? "End" : "--"}",
+                "Status: ${isBefore ? "Not Started yet" : isBetween ? "Active" : isAfter ? "End" : "--"}",
                 style: kStyle12,
               ),
+              StreamBuilder(
+                  stream: FirebaseQueryHelper.firebaseFireStore
+                      .collection('typing')
+                      .doc("${booking['id']}")
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    bool isTyping = snapshot.data?.data()?['isTyping'] == true;
+                    bool isSender = snapshot.data?.data()?['senderID'] !=
+                        FirebaseAuth.instance.currentUser?.uid;
+                    bool isOurChat =
+                        booking['id'] == snapshot.data?.data()?['chatID'];
+                    return isTyping && isSender && isOurChat
+                        ? const Text(
+                            "Typing....",
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.red,
+                            ),
+                          )
+                        : const SizedBox.shrink();
+                  }),
             ],
           ),
         ),

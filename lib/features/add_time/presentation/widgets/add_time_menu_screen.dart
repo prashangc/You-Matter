@@ -79,6 +79,8 @@ Widget addTimeMenu(
                                     if (filteredTime.isNotEmpty) {
                                       previous = filteredTime
                                           .map((e) => {
+                                                'isBooked': e['isBooked'],
+                                                'scheduleID': e['scheduleID'],
                                                 'startTime': e['startTime'],
                                                 'endTime': e['endTime'],
                                                 'createdOn': e['createdOn']
