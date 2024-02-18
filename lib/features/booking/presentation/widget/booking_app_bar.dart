@@ -8,7 +8,7 @@ Widget bookingAppBar(
   context,
   String title,
   String title2,
-  StateHandlerBloc lengthBloc,
+  StateHandlerBloc? lengthBloc,
 ) {
   return Container(
     padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -47,30 +47,33 @@ Widget bookingAppBar(
                   ),
                 ],
               ),
-              Container(
-                padding: const EdgeInsets.all(8.0),
-                decoration: BoxDecoration(
-                    color: ColorConstant.kWhite.withOpacity(0.4),
-                    borderRadius:
-                        const BorderRadius.all(Radius.circular(16.0))),
-                child: StreamBuilder<dynamic>(
-                    initialData: 0,
-                    stream: lengthBloc.stateStream,
-                    builder: (c, s) {
-                      print(s.data);
-                      if (s.data == null) {
-                        return Text(
-                          'Total : ${s.data}',
-                          style: kStyle12.copyWith(color: ColorConstant.kWhite),
-                        );
-                      } else {
-                        return Text(
-                          'Total : ${s.data}',
-                          style: kStyle12.copyWith(color: ColorConstant.kWhite),
-                        );
-                      }
-                    }),
-              ),
+              if (lengthBloc != null) ...{
+                Container(
+                  padding: const EdgeInsets.all(8.0),
+                  decoration: BoxDecoration(
+                      color: ColorConstant.kWhite.withOpacity(0.4),
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(16.0))),
+                  child: StreamBuilder<dynamic>(
+                      initialData: 0,
+                      stream: lengthBloc.stateStream,
+                      builder: (c, s) {
+                        if (s.data == null) {
+                          return Text(
+                            'Total : ${s.data}',
+                            style:
+                                kStyle12.copyWith(color: ColorConstant.kWhite),
+                          );
+                        } else {
+                          return Text(
+                            'Total : ${s.data}',
+                            style:
+                                kStyle12.copyWith(color: ColorConstant.kWhite),
+                          );
+                        }
+                      }),
+                ),
+              }
             ],
           ),
         )
