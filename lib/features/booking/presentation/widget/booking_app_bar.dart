@@ -8,21 +8,24 @@ Widget bookingAppBar(
   context,
   String title,
   String title2,
-  StateHandlerBloc? lengthBloc,
-) {
+  StateHandlerBloc? lengthBloc, {
+  bool? isOnboarding,
+}) {
   return Container(
     padding: const EdgeInsets.symmetric(horizontal: 12.0),
     color: ColorConstant.kPrimary,
     child: Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        GestureDetector(
-          onTap: () => Navigator.pop(context),
-          child: Icon(
-            Icons.arrow_back,
-            color: ColorConstant.kWhite,
+        if (isOnboarding != true) ...{
+          GestureDetector(
+            onTap: () => Navigator.pop(context),
+            child: Icon(
+              Icons.arrow_back,
+              color: ColorConstant.kWhite,
+            ),
           ),
-        ),
+        },
         sizedBox24(),
         Expanded(
           child: Row(
