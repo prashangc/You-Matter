@@ -14,6 +14,7 @@ import 'package:you_matter/features/dashboard/presentation/ui/base.dart';
 import 'package:you_matter/features/questions/presentation/ui/question_screen.dart';
 
 import '../../services/firebase/firebase_query_handler.dart';
+import '../login/presentation/ui/login.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -91,7 +92,9 @@ class _SplashScreenState extends State<SplashScreen>
       bool isNotToday =
           data?['date'] != DateFormat("EEEE, MMM d").format(DateTime.now());
       DateTime endTime = parseTimeString(data?['endTime']);
-      bool appointmentEnded = DateTime.now().isAfter(endTime);
+      final current = DateTime(DateTime.now().year, DateTime.now().month,
+          DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
+      bool appointmentEnded = current.isAfter(endTime);
       if (isNotToday || appointmentEnded) {
         await element.reference.delete();
       }
