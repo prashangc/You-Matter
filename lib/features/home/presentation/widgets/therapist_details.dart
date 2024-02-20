@@ -122,7 +122,8 @@ class _TherapistDetailScreenState extends State<TherapistDetailScreen> {
         height: 55,
         child: StreamBuilder(
             stream: therapistController.getAllBookings(
-                uid: FirebaseAuth.instance.currentUser!.uid, therapistID: id),
+                uid: FirebaseAuth.instance.currentUser?.uid ?? "",
+                therapistID: id),
             builder: (context, snapshot) {
               bool isBookedAlready = snapshot.data?.data() != null;
               return snapshot.connectionState == ConnectionState.waiting

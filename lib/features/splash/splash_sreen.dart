@@ -46,19 +46,21 @@ class _SplashScreenState extends State<SplashScreen>
     animationController!.forward();
 
     Future.delayed(const Duration(seconds: 2), () async {
-      await removeOldDatas();
+      if (FirebaseAuth.instance.currentUser?.uid != null) {
+        await removeOldDatas();
+      }
       final preference = await SharedPreferences.getInstance();
       String? uid = preference.getString("uid");
       bool? isTherapist = preference.getBool("isTherapist");
       if (uid != null) {
-        pushTo(
+        pushAndRemoveUpto(
             context: context,
             screen: BasePage(
               currentIndex: 0,
               isTherapist: isTherapist ?? false,
             ));
       } else {
-        pushTo(
+        pushAndRemoveUpto(
             context: context,
             screen: const QuestionAnswerScreen(
               isOnboarding: true,
