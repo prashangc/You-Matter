@@ -4,8 +4,8 @@ class ColorConstant {
   ColorConstant._();
 
   // static Color backgroundColor = const Color(0xFFE9ECF4);
-  static Color backgroundColor = const Color(0xFFFAF1EA);
-  static Color kBackgroundColor = const Color(0xFFFAF1EA);
+  static Color backgroundColor = const Color(0xFFE9ECF4);
+  static Color kBackgroundColor = const Color(0xFFE9ECF4);
   static Color kWhite = Colors.white;
   static Color kTransparent = Colors.transparent;
   static Color kRed = Colors.red;
@@ -16,7 +16,7 @@ class ColorConstant {
   static Color kBlue = Colors.blue;
   static Color kBlack = Colors.black;
   static Color kPurple = Colors.purple;
-  static Color kPrimary = kBlack;
+  static Color kPrimary = const Color(0xFF87CEEB);
   static Color kError = const Color(0xFFEEBFBF);
   static Color myPurple = const Color(0xFF585EAA);
   static Color myYellow = const Color(0xFFFCB31F);

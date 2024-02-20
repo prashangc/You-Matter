@@ -20,9 +20,8 @@ Widget bookingAppBar(
         if (isOnboarding != true) ...{
           GestureDetector(
             onTap: () => Navigator.pop(context),
-            child: Icon(
+            child: const Icon(
               Icons.arrow_back,
-              color: ColorConstant.kWhite,
             ),
           ),
         },
@@ -37,14 +36,11 @@ Widget bookingAppBar(
                   sizedBox16(),
                   Text(
                     title,
-                    style: kStyle18B.copyWith(
-                      color: ColorConstant.kWhite,
-                    ),
+                    style: kStyle18B.copyWith(),
                   ),
                   Text(
                     title2,
                     style: kStyle18B.copyWith(
-                      color: ColorConstant.kWhite,
                       fontSize: 24.0,
                     ),
                   ),
@@ -64,14 +60,12 @@ Widget bookingAppBar(
                         if (s.data == null) {
                           return Text(
                             'Total : ${s.data}',
-                            style:
-                                kStyle12.copyWith(color: ColorConstant.kWhite),
+                            style: kStyle12.copyWith(),
                           );
                         } else {
                           return Text(
                             'Total : ${s.data}',
-                            style:
-                                kStyle12.copyWith(color: ColorConstant.kWhite),
+                            style: kStyle12.copyWith(),
                           );
                         }
                       }),

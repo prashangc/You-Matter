@@ -14,7 +14,6 @@ import 'package:you_matter/features/dashboard/presentation/ui/base.dart';
 import 'package:you_matter/features/questions/presentation/ui/question_screen.dart';
 
 import '../../services/firebase/firebase_query_handler.dart';
-import '../login/presentation/ui/login.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -189,7 +188,7 @@ class _SplashScreenState extends State<SplashScreen>
               width: MediaQuery.of(context).size.width,
               alignment: Alignment.center,
               child: Text(
-                "Powered By: You Matter",
+                "Powered By: Sareena Pradhan",
                 style: kStyle12B,
               ),
             ),

@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:collection/collection.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -9,7 +9,7 @@ import 'package:you_matter/core/utils/time_utils.dart';
 import 'package:you_matter/features/chat/presentation/widget/chat_app_bar.dart';
 import 'package:you_matter/features/chat/presentation/widget/chat_page.dart';
 import 'package:you_matter/features/chat/presentation/widget/therapist_details.dart';
-import 'package:collection/collection.dart';
+
 import '../../../../services/firebase/firebase_query_handler.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -79,18 +79,15 @@ class _ChatScreenState extends State<ChatScreen> {
               }
               String? endTime = latestBooking?['endTime'];
               final current = DateTime(
-                  DateTime.now().year,
-                  DateTime.now().month,
-                  DateTime.now().day,
-                  DateTime.now().hour,
-                  DateTime.now().minute);
+                DateTime.now().year,
+                DateTime.now().month,
+                DateTime.now().day,
+                DateTime.now().hour,
+                DateTime.now().minute,
+              );
               bool appointMentEnds = endTime != null
                   ? current.isAfter(parseTimeString(endTime))
                   : true;
-              // return Text(
-              //     "$current::::${parseTimeString(endTime!)}:::${current.isAfter(parseTimeString(endTime))}");
-              // return Text(
-              //     "${endTime != null ? current.isAfter(parseTimeString(endTime)) : "DSDSDS"}");
               return SizedBox(
                   width: maxWidth(context),
                   height: maxHeight(context),
@@ -120,34 +117,40 @@ class _ChatScreenState extends State<ChatScreen> {
                                 ),
                               ],
                             ),
-                            appointMentEnds
-                                ? const Center(
-                                    child:
-                                        Text("No appointments at the moment!!"),
-                                  )
-                                : Positioned(
-                                    top: 25.0,
-                                    bottom: 25.0,
-                                    left: 20.0,
-                                    right: 20.0,
-                                    child: Column(
-                                      children: [
-                                        latestBooking == null
-                                            ? infoCard(
-                                                context: context,
-                                                text:
-                                                    'Please book a therapist to consult via chat messages.')
-                                            : therapistDetails(context,
-                                                name:
-                                                    "${chatWith?['username']}",
-                                                email: "${chatWith?['email']}",
-                                                booking: latestBooking),
-                                        sizedBox16(),
-                                        chatPage(context, latestBooking,
-                                            textEditingController),
-                                      ],
-                                    ),
-                                  )
+                            // appointMentEnds
+                            //     ? Center(
+                            //         child: myEmptyCard(
+                            //             context: context,
+                            //             emptyMsg: 'Chat Unavailable',
+                            //             subTitle:
+                            //                 "No appointments at the moment !!!"))
+                            //     :
+                            Positioned(
+                              top: 25.0,
+                              bottom: 25.0,
+                              left: 20.0,
+                              right: 20.0,
+                              child: Column(
+                                children: [
+                                  latestBooking == null || latestBooking.isEmpty
+                                      ? infoCard(
+                                          context: context,
+                                          text:
+                                              'No any appointment at the moment.')
+                                      : therapistDetails(context,
+                                          imageUrl: "${chatWith?['photoUrl']}",
+                                          name: "${chatWith?['username']}",
+                                          email: "${chatWith?['email']}",
+                                          booking: latestBooking),
+                                  sizedBox16(),
+                                  chatPage(
+                                      context,
+                                      latestBooking,
+                                      "${chatWith?['photoUrl']}",
+                                      textEditingController),
+                                ],
+                              ),
+                            )
                           ],
                         ),
                       ),

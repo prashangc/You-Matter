@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:you_matter/core/theme/colors.dart';
 import 'package:you_matter/core/utils/sizes.dart';
-import 'package:you_matter/features/articles/presentation/ui/article_card.dart';
 import 'package:you_matter/features/home/presentation/widgets/explore.dart';
 import 'package:you_matter/features/home/presentation/widgets/therapist.dart';
 
@@ -38,7 +37,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     sizedBox16(),
                     therapistCard(context),
                     sizedBox16(),
-                    articleCard(context),
                   ],
                 ),
               ),

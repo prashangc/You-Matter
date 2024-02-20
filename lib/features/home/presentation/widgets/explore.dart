@@ -27,14 +27,12 @@ Widget exploreCard(context) {
                 Text(
                   'You',
                   style: kStyle18B.copyWith(
-                    color: ColorConstant.kWhite,
                     fontSize: 18.0,
                   ),
                 ),
                 Text(
                   'Matter',
                   style: kStyle18B.copyWith(
-                    color: ColorConstant.kWhite,
                     fontSize: 24.0,
                   ),
                 ),

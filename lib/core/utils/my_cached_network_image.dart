@@ -44,7 +44,7 @@ Widget myCachedNetworkImageCircle({
   return CachedNetworkImage(
     width: myWidth,
     height: myHeight,
-    imageUrl: myImage,
+    imageUrl: myImage.toString(),
     imageBuilder: (context, imageProvider) => Container(
       decoration: BoxDecoration(
         shape: BoxShape.circle,

@@ -20,7 +20,6 @@ Widget myAppBar(context) {
             Text(
               '  Profile',
               style: kStyle18B.copyWith(
-                color: ColorConstant.kWhite,
                 fontSize: 24.0,
               ),
             ),

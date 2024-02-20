@@ -16,7 +16,6 @@ Widget chatAppBar() {
             Text(
               '  Chat',
               style: kStyle18B.copyWith(
-                color: ColorConstant.kWhite,
                 fontSize: 24.0,
               ),
             ),
@@ -30,7 +29,7 @@ Widget chatAppBar() {
                   sizedBox2(),
                   Text(
                     'Notificaton',
-                    style: kStyle12.copyWith(color: ColorConstant.kWhite),
+                    style: kStyle12.copyWith(),
                   ),
                   sizedBox12(),
                   CircleAvatar(

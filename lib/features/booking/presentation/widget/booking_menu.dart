@@ -197,32 +197,6 @@ Widget bookingMenu(context, StateHandlerBloc lengthBloc) {
                                         ),
                                       ],
                                     ),
-                                    0 == 0
-                                        ? GestureDetector(
-                                            onTap: () {},
-                                            child: Container(
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                      vertical: 4.0,
-                                                      horizontal: 6.0),
-                                              decoration: BoxDecoration(
-                                                color: ColorConstant.kRed
-                                                    .withOpacity(0.9),
-                                                borderRadius:
-                                                    const BorderRadius.all(
-                                                  Radius.circular(5.0),
-                                                ),
-                                              ),
-                                              child: Text(
-                                                'Cancel Booking',
-                                                textAlign: TextAlign.center,
-                                                style: kStyle12.copyWith(
-                                                  color: ColorConstant.kWhite,
-                                                ),
-                                              ),
-                                            ),
-                                          )
-                                        : Container(),
                                   ],
                                 ),
                                 sizedBox12(),

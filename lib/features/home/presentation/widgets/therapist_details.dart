@@ -175,7 +175,7 @@ class _TherapistDetailScreenState extends State<TherapistDetailScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
       width: maxWidth(context),
-      color: ColorConstant.kPrimary.withOpacity(0.1),
+      color: ColorConstant.kPrimary,
       child: Column(
         children: [
           myInfo(

@@ -32,6 +32,11 @@ class BasePage extends StatelessWidget {
                 SweetNavBarItem(
                     sweetBackground: ColorConstant.backgroundColor,
                     iconColors: [ColorConstant.kBlack, ColorConstant.kGrey],
+                    sweetIcon: const Icon(Icons.newspaper_outlined),
+                    sweetLabel: 'Article'),
+                SweetNavBarItem(
+                    sweetBackground: ColorConstant.backgroundColor,
+                    iconColors: [ColorConstant.kBlack, ColorConstant.kGrey],
                     sweetIcon: const Icon(Icons.chat_outlined),
                     sweetLabel: 'Chat'),
                 SweetNavBarItem(

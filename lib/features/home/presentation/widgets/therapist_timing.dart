@@ -91,8 +91,8 @@ class _TherapistTimingState extends State<TherapistTiming> {
                                             const EdgeInsets.only(right: 12.0),
                                         decoration: BoxDecoration(
                                             color: isBooked
-                                                ? ColorConstant.kGrey
-                                                    .withOpacity(0.4)
+                                                ? ColorConstant.kError
+                                                    .withOpacity(0.8)
                                                 : ColorConstant.kWhite,
                                             borderRadius:
                                                 const BorderRadius.all(
