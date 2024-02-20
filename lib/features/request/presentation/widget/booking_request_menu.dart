@@ -242,8 +242,20 @@ Widget bookingRequestMenu(context, StateHandlerBloc lengthBloc) {
                                               subTitle:
                                                   'Are you sure you want to accept this appointment ?');
                                           if (data != null) {
-                                            requestController.onAccept(
+                                            await requestController.onAccept(
                                                 patientID, scheduleID);
+
+                                            await requestController.createChat(
+                                                startTime: booking['startTime'],
+                                                endTime: booking['endTime'],
+                                                scheduleID: scheduleID,
+                                                patientID: patientID,
+                                                participants: [
+                                                  booking['patient']
+                                                      as Map<String, dynamic>?,
+                                                  booking['therapist']
+                                                      as Map<String, dynamic>?,
+                                                ]);
                                           }
                                         },
                                         child: Container(
