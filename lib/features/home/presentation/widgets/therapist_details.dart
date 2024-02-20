@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:you_matter/core/theme/colors.dart';
 import 'package:you_matter/core/theme/textstyle.dart';
 import 'package:you_matter/core/utils/button.dart';
+import 'package:you_matter/core/utils/confirmation_bottom_sheet.dart';
 import 'package:you_matter/core/utils/info_card.dart';
 import 'package:you_matter/core/utils/my_cached_network_image.dart';
 import 'package:you_matter/core/utils/my_custom_appbar.dart';
@@ -138,66 +139,30 @@ class _TherapistDetailScreenState extends State<TherapistDetailScreen> {
                           width: maxWidth(context),
                           height: 50.0,
                           text: 'Book',
-                          myTap: () {
+                          myTap: () async {
                             if (selectedTime.isEmpty) {
                               popUpHelper.popUp(
                                   context: context,
                                   message: 'Please select a time first',
                                   type: 'error');
                             } else {
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return StatefulBuilder(
-                                      builder: (context, setState) {
-                                    return AlertDialog(
-                                      title: const Text("Confirmation"),
-                                      content: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Text(startTime ?? "Select Time"),
-                                          Text(endTime ?? "Select Date"),
-                                        ],
-                                      ),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          child: const Text("Cancel"),
-                                        ),
-                                        TextButton(
-                                          onPressed: () async {
-                                            if (endTime != null &&
-                                                startTime != null) {
-                                              therapistController
-                                                  .onTherapistBookingRequest(
-                                                      scheduleID: scheduleID,
-                                                      startTime: startTime,
-                                                      endTime: endTime,
-                                                      date: DateFormat(
-                                                              "EEEE, MMM d")
-                                                          .format(
-                                                              DateTime.now()),
-                                                      username: FirebaseAuth
-                                                          .instance
-                                                          .currentUser!
-                                                          .displayName!,
-                                                      uid: FirebaseAuth.instance
-                                                          .currentUser!.uid,
-                                                      therapistID: id);
-                                              Navigator.pop(context);
-                                            }
-                                          },
-                                          child: const Text("Request"),
-                                        ),
-                                      ],
-                                    );
-                                  });
-                                },
-                              );
+                              int? data = await confirmationBottomSheet(
+                                  context: context,
+                                  title: 'Confirm Booking',
+                                  subTitle:
+                                      'Are you sure you want to book this therapist ?');
+                              if (data != null) {
+                                therapistController.onTherapistBookingRequest(
+                                    scheduleID: scheduleID,
+                                    startTime: startTime!,
+                                    endTime: endTime!,
+                                    date: DateFormat("EEEE, MMM d")
+                                        .format(DateTime.now()),
+                                    username: FirebaseAuth
+                                        .instance.currentUser!.displayName!,
+                                    uid: FirebaseAuth.instance.currentUser!.uid,
+                                    therapistID: id);
+                              }
                             }
                           },
                         );
