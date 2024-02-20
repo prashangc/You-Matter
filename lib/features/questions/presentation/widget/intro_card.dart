@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:you_matter/core/route/route.dart';
 import 'package:you_matter/core/theme/colors.dart';
 import 'package:you_matter/core/theme/textstyle.dart';
 import 'package:you_matter/core/utils/sizes.dart';
+import 'package:you_matter/features/login/presentation/ui/login.dart';
 import 'package:you_matter/services/firebase/firebase_query_handler.dart';
 import 'package:you_matter/services/state/state_bloc.dart';
 
@@ -75,9 +77,12 @@ Widget introCard(context, StateHandlerBloc chatStateBloc) {
       sizedBox24(),
       Container(
         alignment: Alignment.center,
-        child: Text(
-          'Skip to login',
-          style: kStyle14B,
+        child: GestureDetector(
+          onTap: () => pushTo(context: context, screen: const LoginScreen()),
+          child: Text(
+            'Skip to login',
+            style: kStyle14B,
+          ),
         ),
       ),
     ],

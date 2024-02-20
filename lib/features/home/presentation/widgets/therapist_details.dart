@@ -42,77 +42,74 @@ class _TherapistDetailScreenState extends State<TherapistDetailScreen> {
         child: SizedBox(
           width: maxWidth(context),
           height: maxHeight(context),
-          child: Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                therapistDetail(context),
-                sizedBox24(),
-                TherapistTiming(
-                  data: widget.data,
-                  onSelect: (selected) {
-                    setState(() {
-                      selectedTime = selected ?? {};
-                    });
-                  },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              therapistDetail(context),
+              sizedBox24(),
+              TherapistTiming(
+                data: widget.data,
+                onSelect: (selected) {
+                  setState(() {
+                    selectedTime = selected ?? {};
+                  });
+                },
+              ),
+              sizedBox24(),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                child: Text(
+                  'Booking Summary :',
+                  style: kStyle14B,
                 ),
-                sizedBox24(),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                  child: Text(
-                    'Booking Summary :',
-                    style: kStyle14B,
+              ),
+              sizedBox24(),
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 20.0),
+                padding: const EdgeInsets.symmetric(
+                    vertical: 20.0, horizontal: 20.0),
+                decoration: BoxDecoration(
+                  color: ColorConstant.kWhite,
+                  boxShadow: [
+                    BoxShadow(
+                        color: ColorConstant.kGrey, offset: const Offset(3, 3))
+                  ],
+                  borderRadius: const BorderRadius.all(
+                    Radius.circular(30.0),
                   ),
                 ),
-                sizedBox24(),
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 20.0),
-                  padding: const EdgeInsets.symmetric(
-                      vertical: 20.0, horizontal: 20.0),
-                  decoration: BoxDecoration(
-                    color: ColorConstant.kWhite,
-                    boxShadow: [
-                      BoxShadow(
-                          color: ColorConstant.kGrey,
-                          offset: const Offset(3, 3))
-                    ],
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(30.0),
+                child: Column(
+                  children: [
+                    myCard(
+                      context: context,
+                      title: 'Start Time',
+                      value: startTime ?? 'N/A',
+                      icon: Icons.timer_outlined,
                     ),
-                  ),
-                  child: Column(
-                    children: [
-                      myCard(
-                        context: context,
-                        title: 'Start Time',
-                        value: startTime ?? 'N/A',
-                        icon: Icons.timer_outlined,
-                      ),
-                      myCard(
-                        context: context,
-                        title: 'End Time',
-                        value: endTime ?? 'N/A',
-                        icon: Icons.timer_outlined,
-                      ),
-                      myCard(
-                        context: context,
-                        title: 'Date',
-                        value:
-                            '${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}',
-                        icon: Icons.timer_outlined,
-                      ),
-                      myCard(
-                        context: context,
-                        title: 'Price',
-                        value: 'Free Consultation',
-                        icon: Icons.attach_money_outlined,
-                        showDivider: false,
-                      ),
-                    ],
-                  ),
+                    myCard(
+                      context: context,
+                      title: 'End Time',
+                      value: endTime ?? 'N/A',
+                      icon: Icons.timer_outlined,
+                    ),
+                    myCard(
+                      context: context,
+                      title: 'Date',
+                      value:
+                          '${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}',
+                      icon: Icons.timer_outlined,
+                    ),
+                    myCard(
+                      context: context,
+                      title: 'Price',
+                      value: 'Free Consultation',
+                      icon: Icons.attach_money_outlined,
+                      showDivider: false,
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
