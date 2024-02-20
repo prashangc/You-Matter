@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:you_matter/core/route/route.dart';
 import 'package:you_matter/core/theme/colors.dart';
 import 'package:you_matter/core/theme/textstyle.dart';
 import 'package:you_matter/core/utils/my_cached_network_image.dart';
 import 'package:you_matter/core/utils/sizes.dart';
+import 'package:you_matter/features/questions/presentation/ui/question_screen.dart';
 
 Widget exploreCard(context) {
   return Container(
@@ -46,28 +48,35 @@ Widget exploreCard(context) {
           ],
         ),
         sizedBox16(),
-        Container(
-          padding: const EdgeInsets.all(12.0),
-          decoration: BoxDecoration(
-            color: ColorConstant.backgroundColor,
-            borderRadius: const BorderRadius.all(
-              Radius.circular(30.0),
+        GestureDetector(
+          onTap: () => pushTo(
+              context: context,
+              screen: const QuestionAnswerScreen(
+                isOnboarding: false,
+              )),
+          child: Container(
+            padding: const EdgeInsets.all(12.0),
+            decoration: BoxDecoration(
+              color: ColorConstant.kWhite,
+              borderRadius: const BorderRadius.all(
+                Radius.circular(30.0),
+              ),
             ),
-          ),
-          child: Row(
-            children: [
-              Icon(
-                Icons.search,
-                size: 16,
-                color: ColorConstant.kBlack,
-              ),
-              sizedBox16(),
-              Text(
-                'Search here',
-                style: kStyle12,
-              ),
-              sizedBox12(),
-            ],
+            child: Row(
+              children: [
+                Icon(
+                  Icons.search,
+                  size: 16,
+                  color: ColorConstant.kBlack,
+                ),
+                sizedBox16(),
+                Text(
+                  'Find therapist',
+                  style: kStyle12,
+                ),
+                sizedBox12(),
+              ],
+            ),
           ),
         ),
         sizedBox16(),

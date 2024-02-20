@@ -39,7 +39,8 @@ Widget myEmptyCard({
         sizedBox2(),
         Text(
           subTitle,
-          overflow: TextOverflow.ellipsis,
+          overflow: TextOverflow.clip,
+          textAlign: TextAlign.center,
           style: kStyle12.copyWith(color: ColorConstant.kRed),
         ),
       ],

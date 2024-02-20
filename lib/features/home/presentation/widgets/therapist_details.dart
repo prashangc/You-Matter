@@ -126,10 +126,10 @@ class _TherapistDetailScreenState extends State<TherapistDetailScreen> {
             builder: (context, snapshot) {
               bool isBookedAlready = snapshot.data?.data() != null;
               return snapshot.connectionState == ConnectionState.waiting
-                  ? const SizedBox(
-                      width: 50.0,
-                      height: 50.0,
-                      child: CircularProgressIndicator())
+                  ? Container(
+                      margin: EdgeInsets.symmetric(
+                          horizontal: maxWidth(context) / 4),
+                      child: const CircularProgressIndicator())
                   : isBookedAlready
                       ? infoCard(
                           context: context,

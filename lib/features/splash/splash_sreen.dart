@@ -11,7 +11,7 @@ import 'package:you_matter/core/theme/textstyle.dart';
 import 'package:you_matter/core/utils/sizes.dart';
 import 'package:you_matter/core/utils/time_utils.dart';
 import 'package:you_matter/features/dashboard/presentation/ui/base.dart';
-import 'package:you_matter/features/login/presentation/ui/login.dart';
+import 'package:you_matter/features/questions/presentation/ui/question_screen.dart';
 
 import '../../services/firebase/firebase_query_handler.dart';
 
@@ -58,7 +58,13 @@ class _SplashScreenState extends State<SplashScreen>
               isTherapist: isTherapist ?? false,
             ));
       } else {
-        pushTo(context: context, screen: const LoginScreen());
+        pushTo(
+            context: context,
+            screen: const QuestionAnswerScreen(
+              isOnboarding: true,
+            ));
+
+        // pushTo(context: context, screen: const LoginScreen());
       }
     });
   }
