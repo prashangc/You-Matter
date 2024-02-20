@@ -236,12 +236,11 @@ Widget bookingRequestMenu(context, StateHandlerBloc lengthBloc) {
                                     if (!isRejected && !isAccepted) ...{
                                       GestureDetector(
                                         onTap: () async {
-                                          String? data =
-                                              await confirmationBottomSheet(
-                                                  context: context,
-                                                  title: 'Accept Booking',
-                                                  subTitle:
-                                                      'Are you sure you want to accept this appointment ?');
+                                          int? data = await confirmationBottomSheet(
+                                              context: context,
+                                              title: 'Accept Booking',
+                                              subTitle:
+                                                  'Are you sure you want to accept this appointment ?');
                                           if (data != null) {
                                             requestController.onAccept(
                                                 patientID, scheduleID);
