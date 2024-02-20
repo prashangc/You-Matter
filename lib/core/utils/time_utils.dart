@@ -8,7 +8,7 @@ DateTime parseTimeString(String timeString) {
   if (timeParts[1] == 'PM' && hours != 12) {
     hours += 12;
   } else if (timeParts[1] == 'AM' && hours == 12) {
-    hours = 0;
+    hours = 12;
   }
   print(minutes);
   return DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day,

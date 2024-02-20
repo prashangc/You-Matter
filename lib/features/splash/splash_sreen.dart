@@ -96,7 +96,7 @@ class _SplashScreenState extends State<SplashScreen>
           DateTime.now().day, DateTime.now().hour, DateTime.now().minute);
       bool appointmentEnded = current.isAfter(endTime);
       if (isNotToday || appointmentEnded) {
-        await element.reference.delete();
+        // await element.reference.delete();
       }
     }
   }

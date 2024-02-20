@@ -78,9 +78,19 @@ class _ChatScreenState extends State<ChatScreen> {
                     as Map<String, dynamic>?;
               }
               String? endTime = latestBooking?['endTime'];
+              final current = DateTime(
+                  DateTime.now().year,
+                  DateTime.now().month,
+                  DateTime.now().day,
+                  DateTime.now().hour,
+                  DateTime.now().minute);
               bool appointMentEnds = endTime != null
-                  ? DateTime.now().isAfter(parseTimeString(endTime))
+                  ? current.isAfter(parseTimeString(endTime))
                   : true;
+              // return Text(
+              //     "$current::::${parseTimeString(endTime!)}:::${current.isAfter(parseTimeString(endTime))}");
+              // return Text(
+              //     "${endTime != null ? current.isAfter(parseTimeString(endTime)) : "DSDSDS"}");
               return SizedBox(
                   width: maxWidth(context),
                   height: maxHeight(context),
