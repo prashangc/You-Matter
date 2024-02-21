@@ -4,6 +4,7 @@ import 'package:you_matter/core/theme/colors.dart';
 import 'package:you_matter/core/theme/textstyle.dart';
 import 'package:you_matter/core/utils/my_cached_network_image.dart';
 import 'package:you_matter/core/utils/sizes.dart';
+import 'package:you_matter/features/dashboard/controller/dashboard_controller.dart';
 import 'package:you_matter/features/questions/presentation/ui/question_screen.dart';
 
 Widget exploreCard(context) {
@@ -38,10 +39,15 @@ Widget exploreCard(context) {
                 ),
               ],
             ),
-            myCachedNetworkImageCircle(
-              myWidth: 40.0,
-              myHeight: 40.0,
-              myImage: '',
+            GestureDetector(
+              onTap: () {
+                dashboardController.baseBloc.storeData(data: 3);
+              },
+              child: myCachedNetworkImageCircle(
+                myWidth: 40.0,
+                myHeight: 40.0,
+                myImage: '',
+              ),
             ),
           ],
         ),
