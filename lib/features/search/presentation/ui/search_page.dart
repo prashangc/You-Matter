@@ -13,6 +13,7 @@ import 'package:you_matter/core/utils/my_rating_bar.dart';
 import 'package:you_matter/core/utils/sizes.dart';
 import 'package:you_matter/features/home/presentation/widgets/therapist_details.dart';
 import 'package:you_matter/features/search/controller/algorithm.dart';
+import 'package:you_matter/features/search/controller/search_controller.dart';
 import 'package:you_matter/services/firebase/firebase_query_handler.dart';
 
 class SearchPage extends StatefulWidget {
@@ -40,9 +41,7 @@ class _SearchPageState extends State<SearchPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 sizedBox12(),
-                searchBar(
-                  context,
-                ),
+                searchBar(context),
                 sizedBox12(),
                 Expanded(
                     child: SingleChildScrollView(
@@ -79,6 +78,7 @@ class _SearchPageState extends State<SearchPage> {
         const SizedBox(width: 8.0),
         Expanded(
           child: TextFormField(
+            controller: searchController.textEditingController,
             cursorColor: ColorConstant.kBackgroundColor,
             textCapitalization: TextCapitalization.words,
             style: kStyle12.copyWith(fontSize: 12.0, color: Colors.grey[400]),
@@ -102,7 +102,12 @@ class _SearchPageState extends State<SearchPage> {
                 color: Colors.grey[400],
               ),
               suffixIcon: GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    setState(() {
+                      keyword = null;
+                      searchController.textEditingController.clear();
+                    });
+                  },
                   child: Icon(
                     Icons.close,
                     size: 18,
@@ -137,7 +142,11 @@ class _SearchPageState extends State<SearchPage> {
           width: 45,
           height: 45,
           child: GestureDetector(
-            onTap: () {},
+            onTap: () {
+              if (keyword != null) {
+                setState(() {});
+              }
+            },
             child: Container(
               width: 30,
               height: 30,
