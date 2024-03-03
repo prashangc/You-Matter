@@ -5,7 +5,7 @@ import 'package:you_matter/core/theme/textstyle.dart';
 import 'package:you_matter/core/utils/my_cached_network_image.dart';
 import 'package:you_matter/core/utils/sizes.dart';
 import 'package:you_matter/features/dashboard/controller/dashboard_controller.dart';
-import 'package:you_matter/features/questions/presentation/ui/question_screen.dart';
+import 'package:you_matter/features/search/presentation/ui/search_page.dart';
 
 Widget exploreCard(context) {
   return Container(
@@ -53,11 +53,7 @@ Widget exploreCard(context) {
         ),
         sizedBox16(),
         GestureDetector(
-          onTap: () => pushTo(
-              context: context,
-              screen: const QuestionAnswerScreen(
-                isOnboarding: false,
-              )),
+          onTap: () => pushTo(context: context, screen: const SearchPage()),
           child: Container(
             padding: const EdgeInsets.all(12.0),
             decoration: BoxDecoration(

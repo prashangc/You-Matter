@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:you_matter/core/route/route.dart';
 import 'package:you_matter/core/theme/colors.dart';
 import 'package:you_matter/core/utils/sizes.dart';
 import 'package:you_matter/features/home/presentation/widgets/explore.dart';
 import 'package:you_matter/features/home/presentation/widgets/therapist.dart';
+import 'package:you_matter/features/questions/presentation/ui/question_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -42,6 +44,17 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
           ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => pushTo(
+            context: context,
+            screen: const QuestionAnswerScreen(
+              isOnboarding: false,
+            )),
+        backgroundColor: ColorConstant.kPrimary,
+        child: const Icon(
+          Icons.chat,
         ),
       ),
     );
