@@ -7,7 +7,7 @@ List<dynamic> findTherapistsByKeyword(List<dynamic> therapist, String keyword) {
         therapistUsername.toLowerCase().startsWith(keyword.toLowerCase());
     return similarity >= 0.5 || isDirectMatch;
   }).toList();
-  print(filteredTherapists.length);
+  print('the number of therapist found is :${filteredTherapists.length}');
   return filteredTherapists;
 }
 

@@ -177,6 +177,14 @@ class _SearchPageState extends State<SearchPage> {
                   .toList();
           if (keyword != null) {
             matchingTherapist = findTherapistsByKeyword(therapist!, keyword!);
+            if (matchingTherapist != null && matchingTherapist.isNotEmpty) {
+              for (var element in matchingTherapist) {
+                final item = element.data();
+                print('the therapist name found is : ${item['username']}');
+              }
+            } else {
+              print('No therapist found.');
+            }
           } else {
             matchingTherapist = therapist;
           }

@@ -97,6 +97,12 @@ List<String> findMostMatchingWords(List<String> words) {
   while (!maxHeap.isEmpty() && maxHeap._heap[0].frequency == maxCount) {
     mostRepetitiveWords.add(maxHeap.removeMax().word);
   }
+  if (mostRepetitiveWords.isEmpty) {
+    print('No matching categories found');
+  }
+  for (var element in mostRepetitiveWords) {
+    print('The category found is: $element');
+  }
 
   return mostRepetitiveWords;
 }

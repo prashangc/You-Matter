@@ -42,6 +42,19 @@ Widget therapistCard(context,
                       filteredCategories
                           .contains(element.data()['therapistCategory']);
                 }).toList();
+                print(
+                    'The number of therapist found is : ${filteredTherapist!.length}');
+
+                if (isChat != null) {
+                  if (filteredTherapist.isNotEmpty) {
+                    for (var element in filteredTherapist) {
+                      final item = element.data();
+                      print("The name of therapist is : ${item['username']}");
+                    }
+                  } else {
+                    print('No any therapists found');
+                  }
+                }
               }
               return snapshot.connectionState == ConnectionState.waiting
                   ? const Center(child: CircularProgressIndicator())
